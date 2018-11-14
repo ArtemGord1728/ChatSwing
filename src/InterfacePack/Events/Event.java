@@ -3,6 +3,7 @@ package InterfacePack;
 public abstract class Event
 {
     private Type type;
+    public boolean handled;
 
     public enum Type {
         MOUSE_PRESSED,
