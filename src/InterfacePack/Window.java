@@ -22,7 +22,6 @@ public class Window extends Canvas
         if(buffer == null)
             createBufferStrategy(6);
 
-
         buffer = getBufferStrategy();
         graphics = buffer.getDrawGraphics();
         graphics.fillRect(0, 0, getWidth(), getHeight());
@@ -32,10 +31,10 @@ public class Window extends Canvas
 
     private void initWindow(String name)
     {
-        frame = new JFrame(name);
         frame.setResizable(true);
         frame.add(this);
         frame.setVisible(true);
+        frame.setTitle(name);
         frame.pack();
     }
 
