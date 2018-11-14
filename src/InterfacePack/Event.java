@@ -1,6 +1,6 @@
 package InterfacePack;
 
-public class Event
+public abstract class Event
 {
     private Type type;
 
