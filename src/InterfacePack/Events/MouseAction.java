@@ -1,4 +1,4 @@
-package InterfacePack;
+package InterfacePack.Events;
 
 public class MouseAction extends Event {
 
