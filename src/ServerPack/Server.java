@@ -1,4 +1,6 @@
 package ServerPack;
 
-public class Server {
+public class Server extends Thread
+{
+    //TODO implementation server
 }
