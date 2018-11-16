@@ -1,4 +1,4 @@
-package InterfacePack.Functionality;
+package Functionality;
 
 import InterfacePack.EventHelper.EventHandler;
 import InterfacePack.Events.Event;
