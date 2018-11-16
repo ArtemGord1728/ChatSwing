@@ -26,8 +26,8 @@ public class Window extends Canvas implements Labels
 
     @Override
     public void showLabels() {
-        Server s = new Server();
-        s.addClient(client);
+//        Server s = new Server();
+//        s.addClient(client);
         JLabel connectionClientsAmount = new JLabel("Connection clients:  " + client);
         connectionClientsAmount.setBounds(250, -80, 180, 200);
         frame.add(connectionClientsAmount);
