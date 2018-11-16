@@ -1,4 +1,4 @@
-package InterfacePack;
+package InterfacePack.Events;
 
 public class MouseButtonEvents extends Event {
     private int keyCode, x, y;
