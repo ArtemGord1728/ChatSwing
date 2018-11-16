@@ -1,4 +1,6 @@
 package InterfacePack.InterfaceElements;
 
-public class Labels {
+public interface Labels
+{
+    void showLabels();
 }
