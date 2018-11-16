@@ -1,4 +1,4 @@
-package InterfacePack;
+package InterfacePack.Events;
 
 public abstract class Event
 {
