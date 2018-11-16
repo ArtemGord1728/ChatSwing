@@ -1,12 +1,14 @@
 package InterfacePack;
 
 import InterfacePack.InterfaceElements.Labels;
+import ServerPack.Server;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferStrategy;
+import java.io.IOException;
 
 public class Window extends Canvas implements Labels
 {
@@ -24,6 +26,8 @@ public class Window extends Canvas implements Labels
 
     @Override
     public void showLabels() {
+        Server s = new Server();
+        s.addClient(client);
         JLabel connectionClientsAmount = new JLabel("Connection clients:  " + client);
         connectionClientsAmount.setBounds(250, -80, 180, 200);
         frame.add(connectionClientsAmount);
