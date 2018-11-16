@@ -4,5 +4,5 @@ import InterfacePack.Events.Event;
 
 public interface EventHandler
 {
-    public boolean handle(Event e);
+    boolean handle(Event e);
 }
