@@ -29,7 +29,7 @@ public class Window extends Canvas implements Labels
         //TODO fix problem with connect to server
 //        Server s = new Server();
 //        s.addClient(client);
-        JLabel connectionClientsAmount = new JLabel("Connection clients:  " + client);
+        JLabel connectionClientsAmount = new JLabel("Connection clients:  ");
         connectionClientsAmount.setBounds(250, -80, 180, 200);
         frame.add(connectionClientsAmount);
     }
