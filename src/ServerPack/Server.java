@@ -4,14 +4,18 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Server
+public class Server extends Thread
 {
     ServerSocket serverSocket;
     Socket client;
     int countClient = 0;
 
+    @Override
+    public void run() {
+        isAddingToServer();
+    }
 
-    public void addClient(int countClient)
+    public boolean isAddingToServer()
     {
         try {
             serverSocket = new ServerSocket(8493);
@@ -20,12 +24,13 @@ public class Server
             {
                 if(client.isConnected())
                 {
-                    this.countClient = countClient;
-                    countClient++;
+                    System.out.println("Client connect to server!");
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        return true;
     }
 }
