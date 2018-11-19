@@ -26,12 +26,15 @@ public class Window extends Canvas implements Labels
 
     @Override
     public void showLabels() {
-        //TODO fix problem with connect to server
-//        Server s = new Server();
-//        s.addClient(client);
-        JLabel connectionClientsAmount = new JLabel("Connection clients:  ");
+        Server s = new Server();
+        s.start();
+        JLabel connectionClientsAmount = new JLabel("Connection clients:  " + client);
         connectionClientsAmount.setBounds(250, -80, 180, 200);
         frame.add(connectionClientsAmount);
+
+        JLabel messagesFromClients = new JLabel("Messages" );
+        messagesFromClients.setBounds(JLabel.LEFT, -80, 180, 200);
+        frame.add(messagesFromClients);
     }
 
     private void renderBuffer() {
