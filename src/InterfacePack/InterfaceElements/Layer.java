@@ -2,7 +2,9 @@ package InterfacePack.InterfaceElements;
 
 import java.io.IOException;
 
-public interface Labels
+public interface Layer
 {
     void showLabels() throws IOException;
+    void showTextLayer();
+    void showPanel();
 }
