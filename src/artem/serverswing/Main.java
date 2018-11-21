@@ -5,6 +5,6 @@ import InterfacePack.Window;
 public class Main {
 
     public static void main(String[] args) {
-        new Window("ServerPack", 500, 500);
+        new Window("Server", 500, 500);
     }
 }
