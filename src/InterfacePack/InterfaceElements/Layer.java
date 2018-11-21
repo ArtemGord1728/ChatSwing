@@ -6,5 +6,4 @@ public interface Layer
 {
     void showLabels() throws IOException;
     void showTextLayer();
-    void showPanel();
 }
