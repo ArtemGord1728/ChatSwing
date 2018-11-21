@@ -1,36 +1,34 @@
 package InterfacePack;
 
-import InterfacePack.InterfaceElements.Labels;
+import InterfacePack.InterfaceElements.Layer;
 import ServerPack.Server;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.image.BufferStrategy;
-import java.io.IOException;
 
-public class Window extends Canvas implements Labels
+public class Window extends Canvas implements Layer
 {
     private BufferStrategy buffer;
     private JFrame frame;
     private Graphics graphics;
     private int client = 0;
+    public static JTextArea textArea;
+    private Server server;
 
     public Window(String name, int width, int height)
     {
         setPreferredSize(new Dimension(width, height));
         initWindow(name);
         renderBuffer();
+        server = new Server();
+        server.run();
     }
 
     @Override
     public void showLabels() {
-        Server s = new Server(client);
-        s.start();
-
         JLabel connectionClientsAmount = new JLabel("Connection clients:  " + client);
-        connectionClientsAmount.setBounds(250, -80, 180, 200);
+        connectionClientsAmount.setBounds(360, -80, 180, 200);
         frame.add(connectionClientsAmount);
 
         JLabel messagesFromClients = new JLabel("Messages" );
@@ -38,12 +36,25 @@ public class Window extends Canvas implements Labels
         frame.add(messagesFromClients);
     }
 
+    @Override
+    public void showTextLayer() {
+        textArea = new JTextArea();
+        textArea.setVisible(true);
+        textArea.setLineWrap(true);
+        textArea.setEnabled(false);
+        textArea.setWrapStyleWord(true);
+        textArea.setBounds(40, 40, getWidth(), getHeight());
+        textArea.setSize(new Dimension(300, 430));
+        frame.add(textArea);
+    }
+
+
     private void renderBuffer() {
         if(buffer == null)
             createBufferStrategy(3);
 
         buffer = getBufferStrategy();
-        graphics = buffer.getDrawGraphics();
+        buffer.getDrawGraphics();
         graphics.fillRect(0, 0, getWidth(), getHeight());
         graphics.setColor(Color.WHITE);
         graphics.dispose();
@@ -52,9 +63,10 @@ public class Window extends Canvas implements Labels
 
     private void initWindow(String name) {
         frame = new JFrame(name);
-        frame.setResizable(true);
+        frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
+        showTextLayer();
         showLabels();
         frame.add(this);
         frame.pack();
