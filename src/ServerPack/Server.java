@@ -1,31 +1,42 @@
 package ServerPack;
 
+import InterfacePack.Window;
+
+import javax.swing.*;
+import java.awt.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Server extends Thread {
-    static ServerSocket serverSocket;
-    private static Socket client;
-    int clients;
+    ServerSocket serverSocket;
+    private Socket client;
+    DataInputStream is;
+    DataOutputStream os;
     public static boolean isEntryToServer;
 
     @Override
     public void run() {
-        isAddingToServer();
+        runServer(Window.textArea);
     }
 
 
 
-    public static boolean isAddingToServer() {
+    public void runServer(JTextArea jTextArea) {
         try {
             serverSocket = new ServerSocket(8493);
             client = serverSocket.accept();
-            if(client.isConnected())
-                isEntryToServer = true;
+            is = new DataInputStream(client.getInputStream());
+            os = new DataOutputStream(client.getOutputStream());
+            os.flush();
+
+            String message = is.readUTF();
+            jTextArea.setText(message);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return isEntryToServer;
     }
 }
