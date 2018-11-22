@@ -21,8 +21,6 @@ public class Window extends Canvas implements Layer
         setPreferredSize(new Dimension(width, height));
         initWindow(name);
         renderBuffer();
-        server = new Server();
-        server.run();
     }
 
     @Override
