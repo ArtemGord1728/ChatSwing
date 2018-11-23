@@ -1,4 +1,4 @@
 package ServerClientsFunctionality;
 
-public class ClientFunctionality {
+public interface ClientFunctionality {
 }
