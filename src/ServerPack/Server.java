@@ -7,6 +7,10 @@ public class Server
     private int client;
     private boolean isConnect = false;
 
+    public Server()
+    {
+        System.out.println("Server start!");
+    }
 
     public boolean actionServer(int client){
         serverRun = new Thread(new Runnable() {
