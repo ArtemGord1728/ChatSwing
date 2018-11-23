@@ -21,6 +21,7 @@ public class Window extends Canvas implements Layer
         setPreferredSize(new Dimension(width, height));
         initWindow(name);
         renderBuffer();
+        server = new Server();
     }
 
     @Override
@@ -41,7 +42,7 @@ public class Window extends Canvas implements Layer
         textArea.setLineWrap(true);
         textArea.setEnabled(false);
         textArea.setWrapStyleWord(true);
-        textArea.setBounds(40, 40, getWidth(), getHeight());
+        textArea.setBounds(10, 40, getWidth(), getHeight());
         textArea.setSize(new Dimension(300, 430));
         frame.add(textArea);
     }
