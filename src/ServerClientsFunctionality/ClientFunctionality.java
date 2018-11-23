@@ -1,4 +1,6 @@
 package ServerClientsFunctionality;
 
-public interface ClientFunctionality {
+public interface ClientFunctionality
+{
+    void receive();
 }
