@@ -4,6 +4,6 @@ import java.io.IOException;
 
 public interface Layer
 {
-    void showLabels() throws IOException;
+    void showLabels();
     void showTextLayer();
 }
