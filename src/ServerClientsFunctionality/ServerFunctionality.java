@@ -1,13 +1,10 @@
 package ServerClientsFunctionality;
 
-import java.io.IOException;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketException;
-import java.net.UnknownHostException;
+import java.util.Date;
 
 public interface ServerFunctionality
 {
-    boolean openConnection(String address);
     void receive();
+    void gettingMessage();
+    void structMessage(Date date, String message);
 }
