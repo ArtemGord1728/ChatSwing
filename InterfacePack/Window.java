@@ -51,6 +51,7 @@ public class Window extends Canvas implements Layer
         if(buffer == null)
             createBufferStrategy(3);
 
+        graphics = getGraphics();
         buffer = getBufferStrategy();
         buffer.getDrawGraphics();
         graphics.fillRect(0, 0, getWidth(), getHeight());
