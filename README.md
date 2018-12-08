@@ -4,7 +4,7 @@
 ## Planning the creation of this project
 Create:
 
-~~- design of application~~
+- ~~design of application~~
 - event models for buttons, text field and etc
 - functionality for client-server interaction
 - functionality for database
