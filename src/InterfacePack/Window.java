@@ -1,8 +1,6 @@
 package InterfacePack;
 
 import InterfacePack.InterfaceElements.Layer;
-import ServerPack.Server;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -14,7 +12,6 @@ public class Window extends Canvas implements Layer
     private Graphics graphics;
     private int client = 0;
     public static JTextArea textArea;
-    private Server server;
 
     public Window(String name, int width, int height)
     {
