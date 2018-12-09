@@ -1,4 +1,4 @@
-package InterfacePack.InterfaceElements;
+package InterfacePack;
 
 public interface Layer
 {
