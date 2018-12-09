@@ -1,4 +1,4 @@
-package InterfacePack;
+package Windows;
 
 import ClientServer.Server;
 import InterfacePack.InterfaceElements.Layer;
@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 
-public class Window extends Canvas implements Layer
+public class ServerWindow extends Canvas implements Layer
 {
     private BufferStrategy buffer;
     private JFrame frame;
@@ -17,7 +17,7 @@ public class Window extends Canvas implements Layer
     public Server server;
 
 
-    public Window(String name, int width, int height, int port)
+    public ServerWindow(String name, int width, int height, int port)
     {
         setPreferredSize(new Dimension(width, height));
         initWindow(name);
@@ -49,8 +49,8 @@ public class Window extends Canvas implements Layer
         frame.add(textArea);
     }
 
-
-    private void renderBuffer() {
+    @Override
+    public void renderBuffer() {
         if(buffer == null)
             createBufferStrategy(3);
 
@@ -63,7 +63,8 @@ public class Window extends Canvas implements Layer
         buffer.show();
     }
 
-    private void initWindow(String name) {
+    @Override
+    public void initWindow(String name) {
         frame = new JFrame(name);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
