@@ -1,5 +1,6 @@
 package InterfacePack;
 
+import ClientServer.Server;
 import InterfacePack.InterfaceElements.Layer;
 import javax.swing.*;
 import java.awt.*;
@@ -10,14 +11,19 @@ public class Window extends Canvas implements Layer
     private BufferStrategy buffer;
     private JFrame frame;
     private Graphics graphics;
+    private boolean isConnect;
     private int client = 0;
     public static JTextArea textArea;
+    public Server server;
 
-    public Window(String name, int width, int height)
+
+    public Window(String name, int width, int height, int port)
     {
         setPreferredSize(new Dimension(width, height));
         initWindow(name);
         renderBuffer();
+        server = new Server(port);
+        isConnect = server.connect();
     }
 
     @Override
@@ -36,10 +42,10 @@ public class Window extends Canvas implements Layer
         textArea = new JTextArea();
         textArea.setVisible(true);
         textArea.setLineWrap(true);
-        textArea.setEnabled(false);
+        textArea.setEnabled(true);
         textArea.setWrapStyleWord(true);
         textArea.setBounds(10, 40, getWidth(), getHeight());
-        textArea.setSize(new Dimension(300, 430));
+        textArea.setSize(new Dimension(150, 50));
         frame.add(textArea);
     }
 
