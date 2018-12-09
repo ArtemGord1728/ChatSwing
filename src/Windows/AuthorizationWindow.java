@@ -1,6 +1,6 @@
 package Windows;
 
-import InterfacePack.InterfaceElements.Layer;
+import InterfacePack.Layer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -76,7 +76,6 @@ public class AuthorizationWindow extends Canvas implements Layer
         frame = new JFrame(name);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
         showTextLayer();
         showLabels();
         frame.add(this);
