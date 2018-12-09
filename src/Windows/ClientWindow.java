@@ -1,6 +1,6 @@
 package Windows;
 
-import InterfacePack.InterfaceElements.Layer;
+import InterfacePack.Layer;
 
 import java.awt.*;
 
