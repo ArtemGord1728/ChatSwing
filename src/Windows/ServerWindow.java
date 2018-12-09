@@ -23,7 +23,6 @@ public class ServerWindow extends Canvas implements Layer
         initWindow(name);
         renderBuffer();
         server = new Server(port);
-        isConnect = server.connect();
     }
 
     @Override
