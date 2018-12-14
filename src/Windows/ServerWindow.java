@@ -1,7 +1,7 @@
 package Windows;
 
 import ClientServer.Server;
-import InterfacePack.InterfaceElements.Layer;
+import InterfacePack.Layer;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
