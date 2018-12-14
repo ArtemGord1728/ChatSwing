@@ -22,18 +22,7 @@ public class Server
         }
     }
 
-    public boolean connect()
-    {
-        try {
-            Socket socket = server.accept();
-
-            if(socket.isConnected())
-                return true;
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-        return false;
+    public boolean isClientConnection() {
+        return true;
     }
 }
