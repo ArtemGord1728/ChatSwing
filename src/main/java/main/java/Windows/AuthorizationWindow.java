@@ -1,8 +1,6 @@
 package main.java.Windows;
 
-import ClientServer.User;
-import InterfacePack.Layer;
-
+import main.java.InterfacePack.Layer;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -15,7 +13,7 @@ public class AuthorizationWindow extends Canvas implements Layer
     private JLabel login, host, password;
     private Graphics graphics;
     public static String hostStr;
-    private ArrayList<User> userList;
+    private ArrayList<main.java.ClientServer.User> userList;
 
     public AuthorizationWindow(String name, int width, int height)
     {
@@ -25,7 +23,6 @@ public class AuthorizationWindow extends Canvas implements Layer
     }
 
 
-    @Override
     public void showLabels() {
         JLabel loginLabel = new JLabel("Login");
         loginLabel.setBounds(80, -40, 180, 200);
@@ -40,7 +37,6 @@ public class AuthorizationWindow extends Canvas implements Layer
         frame.add(ageLabel);
     }
 
-    @Override
     public void showTextLayer() {
         JTextField loginInput = new JTextField();
         loginInput.setVisible(true);
@@ -62,7 +58,6 @@ public class AuthorizationWindow extends Canvas implements Layer
         frame.add(ageInput);
     }
 
-    @Override
     public void renderBuffer() {
         if(buffer == null)
             createBufferStrategy(3);
@@ -76,13 +71,13 @@ public class AuthorizationWindow extends Canvas implements Layer
         buffer.show();
     }
 
-    @Override
     public void initWindow(String name) {
         frame = new JFrame(name);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         showTextLayer();
         showLabels();
+        frame.setVisible(true);
         frame.add(this);
         frame.pack();
     }

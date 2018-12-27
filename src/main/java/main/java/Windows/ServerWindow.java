@@ -1,12 +1,12 @@
 package main.java.Windows;
 
-import ClientServer.Server;
-import InterfacePack.Layer;
+import main.java.ClientServer.Server;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 
-public class ServerWindow extends Canvas implements Layer
+public class ServerWindow extends Canvas implements main.java.InterfacePack.Layer
 {
     private BufferStrategy buffer;
     private JFrame frame;
@@ -21,7 +21,7 @@ public class ServerWindow extends Canvas implements Layer
         setPreferredSize(new Dimension(width, height));
         initWindow(name);
         renderBuffer();
-        server = new Server(port, AuthorizationWindow.hostStr);
+        server = new Server(port, main.java.Windows.AuthorizationWindow.hostStr);
 
         if(server.isClientConnection())
             client++;
