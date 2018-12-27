@@ -1,4 +1,4 @@
-package InterfacePack;
+package main.java.InterfacePack;
 
 public interface Layer
 {

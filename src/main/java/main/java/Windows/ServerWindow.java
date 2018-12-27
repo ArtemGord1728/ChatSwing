@@ -1,4 +1,4 @@
-package Windows;
+package main.java.Windows;
 
 import ClientServer.Server;
 import InterfacePack.Layer;
@@ -11,8 +11,7 @@ public class ServerWindow extends Canvas implements Layer
     private BufferStrategy buffer;
     private JFrame frame;
     private Graphics graphics;
-    private boolean isConnect;
-    private int client = 0;
+    private int client;
     public static JTextArea textArea;
     public Server server;
 
@@ -22,10 +21,14 @@ public class ServerWindow extends Canvas implements Layer
         setPreferredSize(new Dimension(width, height));
         initWindow(name);
         renderBuffer();
-        server = new Server(port);
+        server = new Server(port, AuthorizationWindow.hostStr);
+
+        if(server.isClientConnection())
+            client++;
+        else
+            client = 0;
     }
 
-    @Override
     public void showLabels() {
         JLabel connectionClientsAmount = new JLabel("Connection clients:  " + client);
         connectionClientsAmount.setBounds(360, -80, 180, 200);
@@ -36,19 +39,17 @@ public class ServerWindow extends Canvas implements Layer
         frame.add(messagesFromClients);
     }
 
-    @Override
     public void showTextLayer() {
         textArea = new JTextArea();
         textArea.setVisible(true);
         textArea.setLineWrap(true);
-        textArea.setEnabled(true);
+        textArea.setEnabled(false);
         textArea.setWrapStyleWord(true);
         textArea.setBounds(10, 40, getWidth(), getHeight());
-        textArea.setSize(new Dimension(150, 50));
+        textArea.setSize(new Dimension(250, 350));
         frame.add(textArea);
     }
 
-    @Override
     public void renderBuffer() {
         if(buffer == null)
             createBufferStrategy(3);
@@ -62,7 +63,6 @@ public class ServerWindow extends Canvas implements Layer
         buffer.show();
     }
 
-    @Override
     public void initWindow(String name) {
         frame = new JFrame(name);
         frame.setResizable(false);

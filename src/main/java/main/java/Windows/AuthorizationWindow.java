@@ -1,10 +1,12 @@
-package Windows;
+package main.java.Windows;
 
+import ClientServer.User;
 import InterfacePack.Layer;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.util.ArrayList;
 
 public class AuthorizationWindow extends Canvas implements Layer
 {
@@ -12,6 +14,8 @@ public class AuthorizationWindow extends Canvas implements Layer
     private JFrame frame;
     private JLabel login, host, password;
     private Graphics graphics;
+    public static String hostStr;
+    private ArrayList<User> userList;
 
     public AuthorizationWindow(String name, int width, int height)
     {
@@ -49,6 +53,7 @@ public class AuthorizationWindow extends Canvas implements Layer
         hostInput.setBounds(50, 135, 180, 200);
         hostInput.setSize(new Dimension(100, 30));
         frame.add(hostInput);
+        hostStr = hostInput.getText();
 
         JTextField ageInput = new JTextField();
         ageInput.setVisible(true);
