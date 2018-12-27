@@ -1,10 +1,13 @@
 package main.java.Windows;
 
 import main.java.ClientServer.Server;
+import main.java.ClientServer.User;
+import sun.jvm.hotspot.utilities.Assert;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.util.ArrayList;
 
 public class ServerWindow extends Canvas implements main.java.InterfacePack.Layer
 {
@@ -14,6 +17,7 @@ public class ServerWindow extends Canvas implements main.java.InterfacePack.Laye
     private int client;
     public static JTextArea textArea;
     public Server server;
+    private ArrayList<User> userList;
 
 
     public ServerWindow(String name, int width, int height, int port)
@@ -21,12 +25,12 @@ public class ServerWindow extends Canvas implements main.java.InterfacePack.Laye
         setPreferredSize(new Dimension(width, height));
         initWindow(name);
         renderBuffer();
-        server = new Server(port, main.java.Windows.AuthorizationWindow.hostStr);
+        server = new Server(port, AuthorizationWindow.hostStr);
 
         if(server.isClientConnection())
-            client++;
-        else
-            client = 0;
+            userList.add(new User(AuthorizationWindow.nameStr, AuthorizationWindow.ageStr, AuthorizationWindow.hostStr));
+
+        assert(!server.isClientConnection());
     }
 
     public void showLabels() {
