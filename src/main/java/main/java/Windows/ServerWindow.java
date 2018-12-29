@@ -2,13 +2,14 @@ package main.java.Windows;
 
 import main.java.ClientServer.Server;
 import main.java.ClientServer.User;
+import main.java.InterfacePack.Layer;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 
-public class ServerWindow extends Canvas implements main.java.InterfacePack.Layer
+public class ServerWindow extends Canvas implements Layer
 {
     private BufferStrategy buffer;
     private JFrame frame;
@@ -75,5 +76,10 @@ public class ServerWindow extends Canvas implements main.java.InterfacePack.Laye
         showLabels();
         frame.add(this);
         frame.pack();
+    }
+
+    @Override
+    public void showButton() {
+
     }
 }
