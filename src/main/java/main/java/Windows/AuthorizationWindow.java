@@ -3,17 +3,20 @@ package main.java.Windows;
 import main.java.InterfacePack.Layer;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferStrategy;
-import java.util.ArrayList;
 
 public class AuthorizationWindow extends Canvas implements Layer
 {
     private BufferStrategy buffer;
     private JFrame frame;
-    private JLabel login, host, password;
     private Graphics graphics;
+    private JButton btn_reg;
+    public static String nameStr;
     public static String hostStr;
-    private ArrayList<main.java.ClientServer.User> userList;
+    public static int ageStr;
+    public static boolean isRegistration;
 
     public AuthorizationWindow(String name, int width, int height)
     {
@@ -49,11 +52,10 @@ public class AuthorizationWindow extends Canvas implements Layer
         hostInput.setBounds(50, 135, 180, 200);
         hostInput.setSize(new Dimension(100, 30));
         frame.add(hostInput);
-        hostStr = hostInput.getText();
 
         JTextField ageInput = new JTextField();
         ageInput.setVisible(true);
-        ageInput.setBounds(50, 200, 180, 200);
+        ageInput.setBounds(100, 100, 180, 200);
         ageInput.setSize(new Dimension(100, 30));
         frame.add(ageInput);
     }
@@ -75,10 +77,22 @@ public class AuthorizationWindow extends Canvas implements Layer
         frame = new JFrame(name);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        showTextLayer();
         showLabels();
+        showTextLayer();
+        showButton();
         frame.setVisible(true);
         frame.add(this);
         frame.pack();
+    }
+
+    public void showButton() {
+        btn_reg = new JButton("Registration");
+        btn_reg.setBounds(10, 10, 50, 50);
+        btn_reg.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                isRegistration = true;
+            }
+        });
     }
 }
