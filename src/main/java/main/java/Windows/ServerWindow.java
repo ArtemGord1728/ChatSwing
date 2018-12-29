@@ -2,7 +2,6 @@ package main.java.Windows;
 
 import main.java.ClientServer.Server;
 import main.java.ClientServer.User;
-import sun.jvm.hotspot.utilities.Assert;
 
 import javax.swing.*;
 import java.awt.*;
