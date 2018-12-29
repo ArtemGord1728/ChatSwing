@@ -11,6 +11,7 @@ public class Server
     private InetAddress ip;
     private int port;
     private Socket socket;
+    private Thread runServer;
 
     public Server(int port, String host) {
         this.port = port;
@@ -23,8 +24,17 @@ public class Server
         }
 
         while (true) {
-
+            activateServer();
         }
+    }
+
+    private void activateServer() {
+        runServer = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
     }
 
     public boolean isClientConnection() {
