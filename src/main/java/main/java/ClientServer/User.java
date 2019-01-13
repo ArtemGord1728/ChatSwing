@@ -11,4 +11,16 @@ public class User
         this.age = age;
         this.host = host;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public String getHost() {
+        return host;
+    }
 }
