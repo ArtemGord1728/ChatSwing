@@ -59,5 +59,10 @@ public class ClientWindow extends Canvas implements Layer {
         frame.add(this);
         frame.pack();
     }
+
+    @Override
+    public void showButton() {
+
+    }
 }
 
