@@ -14,9 +14,7 @@ public class AuthorizationWindow extends Canvas implements Layer
     private Graphics graphics;
     private JButton btn_reg;
     public static String nameStr;
-    public static String hostStr;
-    public static int ageStr;
-    public static boolean isRegistration;
+    public static String portStr;
 
     public AuthorizationWindow(String name, int width, int height)
     {
@@ -29,35 +27,23 @@ public class AuthorizationWindow extends Canvas implements Layer
     public void showLabels() {
         JLabel loginLabel = new JLabel("Login");
         loginLabel.setBounds(80, -40, 180, 200);
+
+        JLabel hostLabel = new JLabel("Port");
+        hostLabel.setBounds(85, 25, 180, 200);
         frame.add(loginLabel);
-
-        JLabel hostLabel = new JLabel("Host");
-        hostLabel.setBounds(83, 25, 180, 200);
         frame.add(hostLabel);
-
-        JLabel ageLabel = new JLabel("Age");
-        ageLabel.setBounds(85, 90, 180, 200);
-        frame.add(ageLabel);
     }
 
     public void showTextLayer() {
         JTextField loginInput = new JTextField();
-        loginInput.setVisible(true);
         loginInput.setBounds(50, 70, 180, 200);
         loginInput.setSize(new Dimension(100, 30));
         frame.add(loginInput);
 
-        JTextField hostInput = new JTextField();
-        hostInput.setVisible(true);
-        hostInput.setBounds(50, 135, 180, 200);
-        hostInput.setSize(new Dimension(100, 30));
-        frame.add(hostInput);
-
-        JTextField ageInput = new JTextField();
-        ageInput.setVisible(true);
-        ageInput.setBounds(100, 100, 180, 200);
-        ageInput.setSize(new Dimension(100, 30));
-        frame.add(ageInput);
+        JTextField portInput = new JTextField();
+        portInput.setBounds(50, 130, 180, 200);
+        portInput.setSize(new Dimension(100, 30));
+        frame.add(portInput);
     }
 
     public void renderBuffer() {
@@ -77,22 +63,21 @@ public class AuthorizationWindow extends Canvas implements Layer
         frame = new JFrame(name);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        showLabels();
+        frame.setVisible(true);
         showTextLayer();
         showButton();
-        frame.setVisible(true);
+        showLabels();
         frame.add(this);
         frame.pack();
     }
 
     public void showButton() {
         btn_reg = new JButton("Registration");
-        btn_reg.setBounds(10, 10, 50, 50);
         btn_reg.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                isRegistration = true;
             }
         });
+        frame.getContentPane().add(BorderLayout.SOUTH, btn_reg);
     }
 }
