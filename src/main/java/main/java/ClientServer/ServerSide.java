@@ -1,19 +1,21 @@
 package main.java.ClientServer;
 
+import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.processing.SupportedAnnotationTypes;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class ServerSide
-{
+public class ServerSide {
     private ServerSocket server;
     private InetAddress ip;
     private int port;
     private Socket socket;
     private Thread runServer;
 
-    public ServerSide(int port, String host) {
+    public ServerSide(int port, @NotNull String host) {
         this.port = port;
         try {
             server = new ServerSocket(port);
@@ -35,6 +37,7 @@ public class ServerSide
                     e.printStackTrace();
                 }
             }
-        });
+        }, "runServer");
+        runServer.start();
     }
 }
