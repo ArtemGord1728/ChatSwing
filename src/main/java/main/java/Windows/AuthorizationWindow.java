@@ -46,9 +46,8 @@ public class AuthorizationWindow extends Canvas implements Layer {
         portInput.setBounds(50, 130, 180, 200);
         portInput.setSize(new Dimension(100, 30));
         frame.add(portInput);
-
-        portInput.addKeyListener(new ActionsListeners());
         loginInput.addKeyListener(new ActionsListeners());
+        portInput.addKeyListener(new ActionsListeners());
     }
 
     public void renderBuffer() {
@@ -92,12 +91,14 @@ public class AuthorizationWindow extends Canvas implements Layer {
                 return;
             }
             new ClientWindow("Client", 500, 500);
+            new ServerWindow("Server", 500, 500, Integer.parseInt(portInput.getText()));
         }
 
         @Override
         public void keyPressed(KeyEvent e) {
             if(e.getKeyCode() == KeyEvent.VK_ENTER){
                 new ClientWindow("Client", 500, 500);
+                new ServerWindow("Server", 500, 500, Integer.parseInt(portInput.getText()));
             }
             else if(loginInput.getText().equals("") || portInput.getText().equals("")) {
                 return;
