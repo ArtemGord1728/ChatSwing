@@ -6,12 +6,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 
 public class AuthorizationWindow extends Canvas implements Layer {
     private BufferStrategy buffer;
     private JFrame frame;
     private Graphics graphics;
+    private static JTextField loginInput, portInput;
     private JButton btn_reg;
     public static String nameStr;
     public static String portStr;
@@ -34,15 +37,18 @@ public class AuthorizationWindow extends Canvas implements Layer {
     }
 
     public void showTextLayer() {
-        JTextField loginInput = new JTextField();
+        loginInput = new JTextField();
         loginInput.setBounds(50, 70, 180, 200);
         loginInput.setSize(new Dimension(100, 30));
         frame.add(loginInput);
 
-        JTextField portInput = new JTextField();
+        portInput = new JTextField();
         portInput.setBounds(50, 130, 180, 200);
         portInput.setSize(new Dimension(100, 30));
         frame.add(portInput);
+
+        portInput.addKeyListener(new ActionsListeners());
+        loginInput.addKeyListener(new ActionsListeners());
     }
 
     public void renderBuffer() {
@@ -71,13 +77,31 @@ public class AuthorizationWindow extends Canvas implements Layer {
     }
 
     public void showButton() {
+
+        loginInput.addKeyListener(new ActionsListeners());
         btn_reg = new JButton("Registration");
-        btn_reg.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        btn_reg.addActionListener(new ActionsListeners());
+        frame.getContentPane().add(BorderLayout.SOUTH, btn_reg);
+    }
+
+
+    static class ActionsListeners extends KeyAdapter implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if(loginInput.getText().equals("") || portInput.getText().equals("")) {
+                return;
+            }
+            new ClientWindow("Client", 500, 500);
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            if(e.getKeyCode() == KeyEvent.VK_ENTER){
                 new ClientWindow("Client", 500, 500);
             }
-        });
-        frame.getContentPane().add(BorderLayout.SOUTH, btn_reg);
+            else if(loginInput.getText().equals("") || portInput.getText().equals("")) {
+                return;
+            }
+        }
     }
 }
