@@ -2,14 +2,12 @@ package main.java.ClientServer;
 
 import java.util.UUID;
 
-public class UniqueAuthKey
-{
-    private UniqueAuthKey(){
+public class UniqueAuthKey {
+    private UniqueAuthKey() {
     }
 
-    public static UUID getAuthKey() {
+    public static UUID setAuthKey() {
         byte[] arrayByte = {10, 20};
-        UUID key = UUID.nameUUIDFromBytes(arrayByte);
-        return key;
+        return UUID.nameUUIDFromBytes(arrayByte);
     }
 }

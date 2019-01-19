@@ -23,7 +23,6 @@ public class ServerSide {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         activateServer();
     }
 

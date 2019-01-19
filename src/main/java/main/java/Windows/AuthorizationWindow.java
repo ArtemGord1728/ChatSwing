@@ -1,14 +1,14 @@
 package main.java.Windows;
 
 import main.java.InterfacePack.Layer;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferStrategy;
 
-public class AuthorizationWindow extends Canvas implements Layer
-{
+public class AuthorizationWindow extends Canvas implements Layer {
     private BufferStrategy buffer;
     private JFrame frame;
     private Graphics graphics;
@@ -16,8 +16,7 @@ public class AuthorizationWindow extends Canvas implements Layer
     public static String nameStr;
     public static String portStr;
 
-    public AuthorizationWindow(String name, int width, int height)
-    {
+    public AuthorizationWindow(String name, int width, int height) {
         setPreferredSize(new Dimension(width, height));
         initWindow(name);
         renderBuffer();
@@ -47,7 +46,7 @@ public class AuthorizationWindow extends Canvas implements Layer
     }
 
     public void renderBuffer() {
-        if(buffer == null)
+        if (buffer == null)
             createBufferStrategy(3);
 
         graphics = getGraphics();
@@ -76,6 +75,7 @@ public class AuthorizationWindow extends Canvas implements Layer
         btn_reg.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                new ClientWindow("Client", 500, 500);
             }
         });
         frame.getContentPane().add(BorderLayout.SOUTH, btn_reg);

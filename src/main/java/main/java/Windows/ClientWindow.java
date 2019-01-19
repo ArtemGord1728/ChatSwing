@@ -13,8 +13,7 @@ public class ClientWindow extends Canvas implements Layer {
     private Graphics graphics;
     private BufferStrategy buffer;
 
-    public ClientWindow(String name, int width, int height)
-    {
+    public ClientWindow(String name, int width, int height) {
         setPreferredSize(new Dimension(width, height));
         initWindow(name);
         renderBuffer();
@@ -50,6 +49,7 @@ public class ClientWindow extends Canvas implements Layer {
     }
 
     public void initWindow(String name) {
+        initWindow("Client");
         frame = new JFrame(name);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

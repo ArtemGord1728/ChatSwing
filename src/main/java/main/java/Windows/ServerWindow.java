@@ -1,6 +1,6 @@
 package main.java.Windows;
 
-import main.java.ClientServer.Server;
+import main.java.ClientServer.ServerSide;
 import main.java.ClientServer.User;
 import main.java.InterfacePack.Layer;
 
@@ -9,28 +9,21 @@ import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 
-public class ServerWindow extends Canvas implements Layer
-{
+public class ServerWindow extends Canvas implements Layer {
     private BufferStrategy buffer;
     private JFrame frame;
     private Graphics graphics;
     private int client;
     public static JTextArea textArea;
-    public Server server;
+    public ServerSide serverSide;
     private ArrayList<User> userList;
 
 
-    public ServerWindow(String name, int width, int height, int port)
-    {
+    public ServerWindow(String name, int width, int height, int port) {
         setPreferredSize(new Dimension(width, height));
         initWindow(name);
         renderBuffer();
-        server = new Server(port, AuthorizationWindow.hostStr);
-
-        if(server.isClientConnection())
-            userList.add(new User(AuthorizationWindow.nameStr, AuthorizationWindow.ageStr, AuthorizationWindow.hostStr));
-
-        assert(!server.isClientConnection());
+        serverSide = new ServerSide(port, AuthorizationWindow.portStr);
     }
 
     public void showLabels() {
@@ -38,7 +31,7 @@ public class ServerWindow extends Canvas implements Layer
         connectionClientsAmount.setBounds(360, -80, 180, 200);
         frame.add(connectionClientsAmount);
 
-        JLabel messagesFromClients = new JLabel("Messages" );
+        JLabel messagesFromClients = new JLabel("Messages");
         messagesFromClients.setBounds(JLabel.LEFT, -80, 180, 200);
         frame.add(messagesFromClients);
     }
@@ -55,7 +48,7 @@ public class ServerWindow extends Canvas implements Layer
     }
 
     public void renderBuffer() {
-        if(buffer == null)
+        if (buffer == null)
             createBufferStrategy(3);
 
         graphics = getGraphics();
