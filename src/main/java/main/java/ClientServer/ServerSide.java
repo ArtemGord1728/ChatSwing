@@ -38,6 +38,7 @@ public class ServerSide
             public void run() {
                 try {
                     socket = server.accept();
+                    executorServer.execute(new ClientSide(port));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -46,7 +47,7 @@ public class ServerSide
         runServer.start();
     }
 
-    private void waitingForData(byte[] data){
+    public void waitingForData(byte[] data){
         datagramPacket = new DatagramPacket(data, data.length);
         try {
             datagramSocket.receive(datagramPacket);
