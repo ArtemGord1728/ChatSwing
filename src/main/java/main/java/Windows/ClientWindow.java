@@ -49,7 +49,6 @@ public class ClientWindow extends Canvas implements Layer {
     }
 
     public void initWindow(String name) {
-        initWindow("Client");
         frame = new JFrame(name);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -47,6 +47,7 @@ public class ServerWindow extends Canvas implements Layer {
         frame.add(textArea);
     }
 
+    @Override
     public void renderBuffer() {
         if (buffer == null)
             createBufferStrategy(3);
@@ -71,7 +72,6 @@ public class ServerWindow extends Canvas implements Layer {
         frame.pack();
     }
 
-    @Override
     public void showButton() {
 
     }
