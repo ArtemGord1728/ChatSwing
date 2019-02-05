@@ -1,5 +1,5 @@
 # ServerSwing
-<b>ServerSwing</b> - open source project with implementation server and database (local storage) 
+<b>ServerSwing</b> - open source project with implementation server and database 
 
 ## Planning the creation of this project
 Create:
