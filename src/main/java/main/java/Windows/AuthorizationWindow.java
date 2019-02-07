@@ -14,8 +14,10 @@ public class AuthorizationWindow extends Canvas implements Layer {
     private BufferStrategy buffer;
     private JFrame frame;
     private Graphics graphics;
-    private static JTextField loginInput, portInput;
+    private static JTextField loginInput, portInput, hostCompanionInput;
     private JButton btn_reg;
+    private static final int width = 180;
+    private static final int height = 200;
     public static String nameStr;
     public static String portStr;
 
@@ -28,24 +30,32 @@ public class AuthorizationWindow extends Canvas implements Layer {
 
     public void showLabels() {
         JLabel loginLabel = new JLabel("Login");
-        loginLabel.setBounds(80, -40, 180, 200);
+        loginLabel.setBounds(80, -40, width, height);
 
         JLabel hostLabel = new JLabel("Port");
-        hostLabel.setBounds(85, 25, 180, 200);
+        hostLabel.setBounds(85, 25, width, height);
+
+        JLabel hostCompanionLabel = new JLabel("Host of Companion");
+        hostCompanionLabel.setBounds(45, 80, width, height);
+
+        frame.add(hostCompanionLabel);
         frame.add(loginLabel);
         frame.add(hostLabel);
     }
 
     public void showTextLayer() {
         loginInput = new JTextField();
-        loginInput.setBounds(50, 70, 180, 200);
-        loginInput.setSize(new Dimension(100, 30));
-        frame.add(loginInput);
+        loginInput.setBounds(50, 70, 100, 30);
 
         portInput = new JTextField();
-        portInput.setBounds(50, 130, 180, 200);
-        portInput.setSize(new Dimension(100, 30));
+        portInput.setBounds(50, 130, 100, 30);
+
+        hostCompanionInput = new JTextField();
+        hostCompanionInput.setBounds(50, 190, 100, 30);
+
+        frame.add(loginInput);
         frame.add(portInput);
+        frame.add(hostCompanionInput);
         loginInput.addKeyListener(new ActionsListeners());
         portInput.addKeyListener(new ActionsListeners());
     }
@@ -91,14 +101,12 @@ public class AuthorizationWindow extends Canvas implements Layer {
                 return;
             }
             new ClientWindow("Client", 500, 500);
-            new ServerWindow("Server", 500, 500, Integer.parseInt(portInput.getText()));
         }
 
         @Override
         public void keyPressed(KeyEvent e) {
             if(e.getKeyCode() == KeyEvent.VK_ENTER){
                 new ClientWindow("Client", 500, 500);
-                new ServerWindow("Server", 500, 500, Integer.parseInt(portInput.getText()));
             }
             else if(loginInput.getText().equals("") || portInput.getText().equals("")) {
                 return;
