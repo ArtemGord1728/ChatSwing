@@ -16,10 +16,10 @@ public class ClientSide extends Thread {
     private DataInputStream inputStream;
     private DataOutputStream outputStream;
 
-    public ClientSide(int port) {
+    public ClientSide(String name, int port, String hostCompanion) {
         try {
             clientSocket = new Socket("localhost", port);
-            address = InetAddress.getLocalHost();
+            address = InetAddress.getByName(hostCompanion);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -38,8 +38,13 @@ public class ClientSide extends Thread {
 
     public void sendFileMessage(byte[] message, String fileName){
         try {
-            FileInputStream file = new FileInputStream(fileName);
-        } catch (FileNotFoundException e) {
+            FileInputStream fileStream = new FileInputStream(fileName);
+            while (fileStream.read() != -1){
+                packet = new DatagramPacket(message, message.length, address, port);
+                socket.send(packet);
+            }
+            fileStream.close();
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
