@@ -16,6 +16,9 @@ public class ClientSide extends Thread {
     private DataInputStream inputStream;
     private DataOutputStream outputStream;
 
+    public ClientSide(){}
+
+
     public ClientSide(String name, int port, String hostCompanion) {
         try {
             clientSocket = new Socket("localhost", port);
