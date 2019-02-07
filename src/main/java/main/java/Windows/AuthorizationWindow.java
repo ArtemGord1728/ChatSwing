@@ -100,13 +100,13 @@ public class AuthorizationWindow extends Canvas implements Layer {
             if(loginInput.getText().equals("") || portInput.getText().equals("")) {
                 return;
             }
-            new ClientWindow("Client", 500, 500);
+            new ClientWindow("Client", 500, "500");
         }
 
         @Override
         public void keyPressed(KeyEvent e) {
             if(e.getKeyCode() == KeyEvent.VK_ENTER){
-                new ClientWindow("Client", 500, 500);
+                new ClientWindow("Client", 500, "500");
             }
             else if(loginInput.getText().equals("") || portInput.getText().equals("")) {
                 return;
