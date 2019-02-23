@@ -7,12 +7,13 @@ import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class ServerSide extends Thread {
+public class ServerSide
+{
     private Socket socket;
     private ServerSocket server;
     private static final int MAX_CLIENTS_ON_SERVER = 3;
     private int port;
-    private Thread runServer;
+    private Thread activate, runServer, receiveData;
     private DatagramSocket datagramSocket;
     private ExecutorService executorServer;
     private LinkedList<ClientSide> clients;
@@ -24,6 +25,7 @@ public class ServerSide extends Thread {
             server = new ServerSocket(port);
             datagramSocket = new DatagramSocket(port);
             executorServer = Executors.newFixedThreadPool(MAX_CLIENTS_ON_SERVER);
+            System.out.println("Server started on port: " + port);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -31,19 +33,18 @@ public class ServerSide extends Thread {
             @Override
             public void run() {
                 running = true;
-                waitingForData();
                 activateServer();
+                waitingForData();
             }
         });
     }
 
     private void activateServer() {
-        runServer = new Thread(new Runnable() {
+        activate = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     socket = server.accept();
-                    executorServer.execute(new ClientSide());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -52,19 +53,24 @@ public class ServerSide extends Thread {
         runServer.start();
     }
 
-    public void sendMessage(byte[] data) {
+   public void sendMessage(byte[] data) {
 
     }
 
     private void waitingForData() {
-        while (running) {
-            byte[] data = new byte[1024];
-            DatagramPacket datagramPacket = new DatagramPacket(data, data.length);
-            try {
-                datagramSocket.receive(datagramPacket);
-            } catch (IOException e) {
-                e.printStackTrace();
+        receiveData = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (running) {
+                    byte[] data = new byte[1024];
+                    DatagramPacket datagramPacket = new DatagramPacket(data, data.length);
+                    try {
+                        datagramSocket.receive(datagramPacket);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
-        }
+        });
     }
 }

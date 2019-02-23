@@ -50,6 +50,9 @@ public class ClientSide extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    public String getMessage(){
+        return new String(packet.getData());
     }
 }
