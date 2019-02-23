@@ -1,4 +1,23 @@
 package main.java.AppManager;
 
-public class ManageController {
+import main.java.ClientServer.ClientSide;
+import main.java.Windows.AuthorizationWindow;
+import javax.swing.*;
+import java.util.Arrays;
+
+public class ManagerController
+{
+    private ClientSide clientInfo;
+
+    public ManagerController(){
+        clientInfo = new ClientSide();
+    }
+
+    public void info(JTextArea txtArea){
+        txtArea.append("New user!" + "\n");
+        txtArea.append("Login - " + AuthorizationWindow.nameStr + "\n");
+        txtArea.append("Port - " + AuthorizationWindow.portStr + "\n");
+    }
+
+    //TODO: do anything else
 }
