@@ -1,22 +1,29 @@
 package main.java.Windows;
 
+import main.java.CoreApp.ClientSide;
 import main.java.InterfacePack.Layer;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferStrategy;
 
-public class ClientWindow extends Canvas implements Layer {
+public class Client extends Canvas implements Layer {
 
     private JTextArea textArea;
+    private JTextField dataInput;
     private JFrame frame;
+    private JButton btn_send;
     private Graphics graphics;
     private BufferStrategy buffer;
+    private ClientSide clientSide;
 
-    public ClientWindow(String name, int port, String hostCompanion) {
+    public Client(String name, int port, String hostCompanion) {
         setPreferredSize(new Dimension(500, 500));
         initWindow("Client");
         renderBuffer();
+        clientSide = new ClientSide(name, port, hostCompanion);
     }
 
     @Override
@@ -32,6 +39,9 @@ public class ClientWindow extends Canvas implements Layer {
         textArea.setWrapStyleWord(true);
         textArea.setBounds(10, 40, getWidth(), getHeight());
         textArea.setSize(new Dimension(250, 350));
+
+        dataInput = new JTextField();
+        frame.getContentPane().add(BorderLayout.SOUTH, dataInput);
         frame.add(textArea);
     }
 
@@ -61,7 +71,13 @@ public class ClientWindow extends Canvas implements Layer {
 
     @Override
     public void showButton() {
-
+        btn_send = new JButton("Send");
+        btn_send.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                clientSide.sendTextMessage(dataInput.getText().getBytes());
+            }
+        });
     }
 }
 
