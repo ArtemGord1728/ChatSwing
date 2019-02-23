@@ -1,9 +1,8 @@
 package main.java.AppManager;
 
-import main.java.ClientServer.ClientSide;
+import main.java.CoreApp.ClientSide;
 import main.java.Windows.AuthorizationWindow;
 import javax.swing.*;
-import java.util.Arrays;
 
 public class ManagerController
 {

@@ -1,4 +1,4 @@
-package main.java.ClientServer;
+package main.java.CoreApp;
 
 import java.util.UUID;
 
