@@ -1,40 +1,41 @@
 package main.java.ClientServer;
 
 
-import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.net.*;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class ServerSide
-{
+public class ServerSide extends Thread {
     private Socket socket;
     private ServerSocket server;
-    private InetAddress ip;
     private static final int MAX_CLIENTS_ON_SERVER = 10;
-    private String host;
     private int port;
     private Thread runServer;
     private DatagramSocket datagramSocket;
     private ExecutorService executorServer;
-    private DatagramPacket datagramPacket;
-    private ArrayList<ClientSide> clients;
+    private LinkedList<ClientSide> clients;
+    private boolean running = false;
 
-    public ServerSide(int port, @NotNull String host) {
+    public ServerSide(int port) {
         this.port = port;
-        this.host = host;
         try {
             server = new ServerSocket(port);
-            ip = InetAddress.getByName(host);
             datagramSocket = new DatagramSocket(port);
             executorServer = Executors.newFixedThreadPool(MAX_CLIENTS_ON_SERVER);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        activateServer();
+        runServer = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                running = true;
+                waitingForData();
+                activateServer();
+                setDaemon(true);
+            }
+        });
     }
 
     private void activateServer() {
@@ -52,13 +53,19 @@ public class ServerSide
         runServer.start();
     }
 
-    public String waitingForData(byte[] data){
-        datagramPacket = new DatagramPacket(data, data.length);
-        try {
-            datagramSocket.receive(datagramPacket);
-        } catch (IOException e) {
-            e.printStackTrace();
+    public void sendMessage(byte[] data) {
+
+    }
+
+    private void waitingForData() {
+        while (running) {
+            byte[] data = new byte[1024];
+            DatagramPacket datagramPacket = new DatagramPacket(data, data.length);
+            try {
+                datagramSocket.receive(datagramPacket);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        return new String(datagramPacket.getData());
     }
 }
