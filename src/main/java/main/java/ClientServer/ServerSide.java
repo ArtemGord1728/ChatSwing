@@ -10,7 +10,7 @@ import java.util.concurrent.Executors;
 public class ServerSide extends Thread {
     private Socket socket;
     private ServerSocket server;
-    private static final int MAX_CLIENTS_ON_SERVER = 10;
+    private static final int MAX_CLIENTS_ON_SERVER = 3;
     private int port;
     private Thread runServer;
     private DatagramSocket datagramSocket;
@@ -33,7 +33,6 @@ public class ServerSide extends Thread {
                 running = true;
                 waitingForData();
                 activateServer();
-                setDaemon(true);
             }
         });
     }
