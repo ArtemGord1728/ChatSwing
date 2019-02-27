@@ -4,6 +4,7 @@ package main.java.CoreApp;
 import java.io.IOException;
 import java.net.*;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -16,7 +17,7 @@ public class ServerSide
     private Thread activate, runServer, receiveData;
     private DatagramSocket datagramSocket;
     private ExecutorService executorServer;
-    private LinkedList<ClientSide> clients;
+    private List<ClientSide> clients;
     private boolean running = false;
 
     public ServerSide(int port) {
@@ -40,9 +41,8 @@ public class ServerSide
     }
 
     private void activateServer() {
-        activate = new Thread(new Runnable() {
-            @Override
-            public void run() {
+        activate = new Thread(() -> {
+            while (running) {
                 try {
                     socket = server.accept();
                 } catch (IOException e) {
