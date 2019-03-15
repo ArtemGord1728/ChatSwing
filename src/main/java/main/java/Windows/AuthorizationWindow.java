@@ -1,6 +1,7 @@
 package main.java.Windows;
 
 import main.java.InterfacePack.Layer;
+import main.java.SQLPack.SQLHelper;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
+import java.sql.SQLException;
 
 public class AuthorizationWindow extends Canvas implements Layer {
     private BufferStrategy buffer;
@@ -18,11 +20,13 @@ public class AuthorizationWindow extends Canvas implements Layer {
     private JButton btn_reg;
     private static final int width = 180;
     private static final int height = 200;
+    private SQLHelper sqlHelper;
     public static String nameStr;
-    public static int portStr;
+    public static String portStr;
 
-    public AuthorizationWindow(String name, int width, int height) {
+    public AuthorizationWindow(String name, int width, int height) throws SQLException, ClassNotFoundException {
         setPreferredSize(new Dimension(width, height));
+        sqlHelper = new SQLHelper();
         initWindow(name);
         renderBuffer();
     }
@@ -97,17 +101,17 @@ public class AuthorizationWindow extends Canvas implements Layer {
         @Override
         public void actionPerformed(ActionEvent e) {
             nameStr = loginInput.getText();
-            portStr = Integer.parseInt(portInput.getText());
+            portStr = portInput.getText();
             if(nameStr.equals("") || portInput.getText().equals("")) {
                 return;
             }
-            new Client(nameStr, portStr, "500");
+            sqlHelper.insert(nameStr, portStr);
         }
 
         @Override
         public void keyPressed(KeyEvent e) {
             if(e.getKeyCode() == KeyEvent.VK_ENTER){
-                new Client("Client", 500, "500");
+                sqlHelper.insert(nameStr, portStr);
             }
             else if(loginInput.getText().equals("") || portInput.getText().equals("")) {
                 return;
