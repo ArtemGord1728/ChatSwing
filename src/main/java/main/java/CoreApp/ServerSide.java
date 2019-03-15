@@ -3,7 +3,6 @@ package main.java.CoreApp;
 
 import java.io.IOException;
 import java.net.*;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -41,12 +40,15 @@ public class ServerSide
     }
 
     private void activateServer() {
-        activate = new Thread(() -> {
-            while (running) {
-                try {
-                    socket = server.accept();
-                } catch (IOException e) {
-                    e.printStackTrace();
+        activate = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (running) {
+                    try {
+                        socket = server.accept();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }, "runServer");
