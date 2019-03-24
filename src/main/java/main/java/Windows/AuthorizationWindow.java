@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
+import java.net.UnknownHostException;
 import java.sql.SQLException;
 
 public class AuthorizationWindow extends Canvas implements Layer {
@@ -20,9 +21,9 @@ public class AuthorizationWindow extends Canvas implements Layer {
     private JButton btn_reg;
     private static final int width = 180;
     private static final int height = 200;
-    private SQLHelper sqlHelper;
+    private static SQLHelper sqlHelper;
     public static String nameStr;
-    public static String portStr;
+    public static int portStr;
 
     public AuthorizationWindow(String name, int width, int height) throws SQLException, ClassNotFoundException {
         setPreferredSize(new Dimension(width, height));
@@ -54,12 +55,9 @@ public class AuthorizationWindow extends Canvas implements Layer {
         portInput = new JTextField();
         portInput.setBounds(50, 130, 100, 30);
 
-        hostCompanionInput = new JTextField();
-        hostCompanionInput.setBounds(50, 190, 100, 30);
 
         frame.add(loginInput);
         frame.add(portInput);
-        frame.add(hostCompanionInput);
         loginInput.addKeyListener(new ActionsListeners());
         portInput.addKeyListener(new ActionsListeners());
     }
@@ -97,11 +95,11 @@ public class AuthorizationWindow extends Canvas implements Layer {
     }
 
 
-    class ActionsListeners extends KeyAdapter implements ActionListener {
+    static class ActionsListeners extends KeyAdapter implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             nameStr = loginInput.getText();
-            portStr = portInput.getText();
+            portStr = Integer.parseInt(portInput.getText());
             if(nameStr.equals("") || portInput.getText().equals("")) {
                 return;
             }
@@ -112,6 +110,11 @@ public class AuthorizationWindow extends Canvas implements Layer {
         public void keyPressed(KeyEvent e) {
             if(e.getKeyCode() == KeyEvent.VK_ENTER){
                 sqlHelper.insert(nameStr, portStr);
+                try {
+                    new Client(nameStr, portStr);
+                } catch (UnknownHostException e1) {
+                    e1.printStackTrace();
+                }
             }
             else if(loginInput.getText().equals("") || portInput.getText().equals("")) {
                 return;
