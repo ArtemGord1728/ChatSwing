@@ -30,13 +30,15 @@ public class ClientSide extends Thread {
         start();
     }
 
-    public void sendTextMessage(byte[] message) {
+    public String sendTextMessage(byte[] message) {
         packet = new DatagramPacket(message, message.length, address, port);
         try {
             socket.send(packet);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        return new String(packet.getData());
     }
 
     public void sendFileMessage(byte[] message, String fileName){
