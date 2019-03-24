@@ -9,8 +9,6 @@ import java.util.concurrent.Executors;
 
 public class ServerSide
 {
-    private Socket socket;
-    private ServerSocket server;
     private static final int MAX_CLIENTS_ON_SERVER = 3;
     private int port;
     private Thread activate, runServer, receiveData;
@@ -22,7 +20,6 @@ public class ServerSide
     public ServerSide(int port) {
         this.port = port;
         try {
-            server = new ServerSocket(port);
             datagramSocket = new DatagramSocket(port);
             executorServer = Executors.newFixedThreadPool(MAX_CLIENTS_ON_SERVER);
             System.out.println("Server started on port: " + port);
@@ -33,27 +30,12 @@ public class ServerSide
             @Override
             public void run() {
                 running = true;
-                activateServer();
                 waitingForData();
-            }
-        });
-    }
-
-    private void activateServer() {
-        activate = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (running) {
-                    try {
-                        socket = server.accept();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
             }
         }, "runServer");
         runServer.start();
     }
+
 
    public void sendMessage(byte[] data) {
 
@@ -68,11 +50,13 @@ public class ServerSide
                     DatagramPacket datagramPacket = new DatagramPacket(data, data.length);
                     try {
                         datagramSocket.receive(datagramPacket);
+                        System.out.println(new String(datagramPacket.getData()));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
             }
-        });
+        }, "receiveData");
+        receiveData.start();
     }
 }
