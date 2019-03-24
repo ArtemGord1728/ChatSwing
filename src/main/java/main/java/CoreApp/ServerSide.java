@@ -37,7 +37,7 @@ public class ServerSide
     }
 
 
-   public void sendMessage(byte[] data) {
+    public void sendMessage(byte[] data) {
 
     }
 
