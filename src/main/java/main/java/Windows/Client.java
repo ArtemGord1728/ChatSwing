@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -32,6 +33,7 @@ public class Client extends Canvas implements Layer
         this.name = name;
         this.port = port;
         ip = InetAddress.getByName(address);
+        clientSide = new ClientSide(name, port);
         setPreferredSize(new Dimension(500, 500));
         initWindow("Client");
         renderBuffer();
@@ -54,6 +56,14 @@ public class Client extends Canvas implements Layer
         textArea.setSize(new Dimension(450, 450));
 
         dataInput = new JTextField();
+        dataInput.addKeyListener(new KeyAdapter() {
+        	@Override
+        	public void keyPressed(KeyEvent e) {
+        		if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+        			send(dataInput.getText());
+        		}
+        	}
+		});
         frame.getContentPane().add(BorderLayout.SOUTH, dataInput);
         frame.add(textArea);
     }
@@ -88,19 +98,25 @@ public class Client extends Canvas implements Layer
     @Override
     public void showButton() {
         btn_send = new JButton("Send");
+        btn_send.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				send(dataInput.getText());
+			}
+		});
         frame.add(btn_send);
+    }
+    
+    private void send(String msg) {
+    	String message = name + ":" + msg;
+    	textInArea(msg);
+    	clientSide.sendTextMessage(message.getBytes());
+    	dataInput.setText("");
     }
 
     private void textInArea(String someText){
-        textArea.setText(someText);
-    }
-
-    class ActionEvent extends KeyAdapter {
-        @Override
-        public void keyPressed(KeyEvent e) {
-            if(e.getKeyCode() == KeyEvent.VK_ENTER){
-                clientSide.sendTextMessage(dataInput.getText().getBytes());
-            }
-        }
+    	textArea.setCaretPosition(textArea.getDocument().getLength());
+        textArea.append(someText + "\n\r");
     }
 }

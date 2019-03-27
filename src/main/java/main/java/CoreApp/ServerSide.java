@@ -11,7 +11,7 @@ public class ServerSide
 {
     private static final int MAX_CLIENTS_ON_SERVER = 3;
     private int port;
-    private Thread activate, runServer, receiveData;
+    private Thread runServer, receiveData;
     private DatagramSocket datagramSocket;
     private ExecutorService executorServer;
     private List<ClientSide> clients;
