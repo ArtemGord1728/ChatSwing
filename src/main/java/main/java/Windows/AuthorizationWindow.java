@@ -17,7 +17,7 @@ public class AuthorizationWindow extends Canvas implements Layer {
     private BufferStrategy buffer;
     private JFrame frame;
     private Graphics graphics;
-    private static JTextField loginInput, portInput, hostCompanionInput;
+    private static JTextField loginInput, portInput;
     private JButton btn_reg;
     private static final int width = 180;
     private static final int height = 200;
@@ -40,10 +40,6 @@ public class AuthorizationWindow extends Canvas implements Layer {
         JLabel hostLabel = new JLabel("Port");
         hostLabel.setBounds(85, 25, width, height);
 
-        JLabel hostCompanionLabel = new JLabel("Host of Companion");
-        hostCompanionLabel.setBounds(45, 80, width, height);
-
-        frame.add(hostCompanionLabel);
         frame.add(loginLabel);
         frame.add(hostLabel);
     }

@@ -19,10 +19,9 @@ public class ClientSide extends Thread {
     public ClientSide(){}
 
 
-    public ClientSide(String name, int port, String hostCompanion) {
+    public ClientSide(String name, int port) {
         try {
             clientSocket = new Socket("localhost", port);
-            address = InetAddress.getByName(hostCompanion);
         } catch (IOException e) {
             e.printStackTrace();
         }
