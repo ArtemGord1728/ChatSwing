@@ -9,35 +9,33 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-public class Client extends Canvas implements Layer
+public class ClientWindow extends Canvas implements Layer
 {
-
     private static JTextArea textArea;
     private static JTextField dataInput;
     private JFrame frame;
     private InetAddress ip;
     private int port;
-    private String name, address;
+    private String name, host;
     private JButton btn_send;
     private Graphics graphics;
     private BufferStrategy buffer;
     private static ClientSide clientSide;
 
 
-    public Client(String name, int port) throws UnknownHostException {
+    public ClientWindow(String name, int port, String host) throws UnknownHostException {
         this.name = name;
         this.port = port;
-        ip = InetAddress.getByName(address);
-        clientSide = new ClientSide(name, port);
+        this.host = host;
         setPreferredSize(new Dimension(500, 500));
-        initWindow("Client");
+        initWindow(name);
         renderBuffer();
-        textInArea("Hello Client");
+        clientSide = new ClientSide(name, port, host);
+        System.out.println("Client name: " + name + ", port: " + port);
     }
 
     @Override
@@ -68,6 +66,32 @@ public class Client extends Canvas implements Layer
         frame.add(textArea);
     }
 
+
+    @Override
+    public void showButton() {
+        btn_send = new JButton("Send");
+        btn_send.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				send(dataInput.getText());
+			}
+		});
+        frame.add(btn_send);
+    }
+    
+    private void send(String msg) {
+    	String message = name + ": " + msg;
+    	textInArea(message);
+    	System.out.println(clientSide.sendTextMessage(message.getBytes()));
+    	dataInput.setText("");
+    }
+
+    private void textInArea(String someText){
+    	textArea.setCaretPosition(textArea.getDocument().getLength());
+        textArea.append(someText + "\n\r");
+    }
+
     @Override
     public void renderBuffer() {
         if (buffer == null)
@@ -84,7 +108,7 @@ public class Client extends Canvas implements Layer
 
     @Override
     public void initWindow(String name) {
-        frame = new JFrame(name);
+        frame = new JFrame("@" + name);
         frame.setResizable(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
@@ -93,30 +117,5 @@ public class Client extends Canvas implements Layer
         showButton();
         frame.add(this);
         frame.pack();
-    }
-
-    @Override
-    public void showButton() {
-        btn_send = new JButton("Send");
-        btn_send.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				send(dataInput.getText());
-			}
-		});
-        frame.add(btn_send);
-    }
-    
-    private void send(String msg) {
-    	String message = name + ":" + msg;
-    	textInArea(msg);
-    	clientSide.sendTextMessage(message.getBytes());
-    	dataInput.setText("");
-    }
-
-    private void textInArea(String someText){
-    	textArea.setCaretPosition(textArea.getDocument().getLength());
-        textArea.append(someText + "\n\r");
     }
 }
