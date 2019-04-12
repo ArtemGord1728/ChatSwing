@@ -8,10 +8,6 @@ public class ManagerController
 {
     private ClientSide clientInfo;
 
-    public ManagerController(){
-        clientInfo = new ClientSide();
-    }
-
     public void info(JTextArea txtArea){
         txtArea.append("New user!" + "\n");
         txtArea.append("Login - " + AuthorizationWindow.nameStr + "\n");

@@ -41,7 +41,7 @@ public class ClientSide {
     public void sendFileMessage(byte[] message, String fileName){
         try {
             FileInputStream fileStream = new FileInputStream(fileName);
-            while (fileStream.read() != -1){
+            while (fileStream.read() != -1) {
                 packet = new DatagramPacket(message, message.length, ip, port);
                 socket.send(packet);
             }
