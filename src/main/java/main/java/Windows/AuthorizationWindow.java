@@ -17,6 +17,7 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.net.UnknownHostException;
 import java.sql.SQLException;
+import java.util.Random;
 import java.util.UUID;
 
 public class AuthorizationWindow extends Canvas implements Layer {

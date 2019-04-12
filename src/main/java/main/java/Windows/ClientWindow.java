@@ -69,12 +69,12 @@ public class ClientWindow extends Canvas implements Layer
 
     @Override
     public void showButton() {
-        btn_send = new JButton("Send");
+        btn_send = new JButton("Send File");
         btn_send.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				send(dataInput.getText());
+				
 			}
 		});
         frame.add(btn_send);
