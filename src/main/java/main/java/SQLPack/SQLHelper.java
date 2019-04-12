@@ -16,11 +16,12 @@ public class SQLHelper
         statement = connection.createStatement();
     }
 
-    public void insert(String name, int host_or_port) {
-        String query = "INSERT INTO clients VALUES(NULL, ?, ?)";
+    public void insert(String name, int port, String host) {
+        String query = "INSERT INTO clients VALUES(NULL, ?, ?, ?)";
         try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, name);
-            preparedStatement.setString(2, String.valueOf(host_or_port));
+            preparedStatement.setString(2, String.valueOf(port));
+            preparedStatement.setString(3, host);
             preparedStatement.executeUpdate();
         }
         catch (SQLException exception){
