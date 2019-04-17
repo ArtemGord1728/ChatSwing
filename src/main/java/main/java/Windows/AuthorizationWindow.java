@@ -38,7 +38,6 @@ public class AuthorizationWindow extends Canvas implements Layer {
         initWindow(name);
         renderBuffer();
         loginInput.setText("user");
-        System.out.println("Hello world");
     }
 
 
