@@ -107,34 +107,40 @@ public class AuthorizationWindow extends Canvas implements Layer {
     }
     
      class ActionsListeners extends KeyAdapter implements ActionListener {
+    	 
         @Override
         public void actionPerformed(ActionEvent e) {
-            nameStr = loginInput.getText();
-            portStr = Integer.parseInt(portInput.getText());
-            hostStr = hostInput.getText();
-            if(loginInput.getText().equals("") || portInput.getText().equals("") || hostInput.getText().equals("")) {
-                return;
-            }
-            
             try {
-				loginUser(nameStr, portStr, hostStr);
-				sqlHelper.insert(nameStr, portStr, hostStr);
+				checkNull();
 			} catch (UnknownHostException message) {
 				message.printStackTrace();
 				return;
 			}
         }
         
-        @Override
         public void keyPressed(KeyEvent e) {
         	if(e.getKeyCode() == KeyEvent.VK_ENTER) {
         		try {
-    				loginUser(nameStr, portStr, hostStr);
-    				sqlHelper.insert(nameStr, portStr, hostStr);
-    			} catch (UnknownHostException message) {
-    				message.printStackTrace();
-    				return;
-    			}
+					checkNull();
+				} catch (UnknownHostException e1) {
+					e1.printStackTrace();
+				}
+        		
+        	}
+        }
+        
+        private void checkNull() throws UnknownHostException {
+        	nameStr = loginInput.getText();
+            portStr = Integer.parseInt(portInput.getText());
+            hostStr = hostInput.getText();
+        	if(loginInput.getText().equals("") || portInput.getText().equals("") || hostInput.getText().equals("")) {
+        		System.out.println("Some field isn't filled. Check for data in the fields");
+        		return;
+            }
+        	else
+        	{
+        		loginUser(nameStr, portStr, hostStr);
+				sqlHelper.insert(nameStr, portStr, hostStr);
         	}
         }
     }
