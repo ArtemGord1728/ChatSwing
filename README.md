@@ -1,2 +1,2 @@
 # ChatSwing
-<b>ServerSwing</b> - open source project with implementation server and database 
+<b>ChatSwing</b> - open source project with implementation server and database 
