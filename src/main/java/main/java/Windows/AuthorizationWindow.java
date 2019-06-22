@@ -1,13 +1,11 @@
 package main.java.Windows;
 
 import main.java.CoreApp.ClientSide;
-import main.java.InterfacePack.BuilderGUI;
 import main.java.InterfacePack.Layer;
 import main.java.SQLPack.SQLHelper;
 
 import javax.swing.*;
 
-import com.sun.org.apache.xerces.internal.dom.PSVIAttrNSImpl;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -17,8 +15,6 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.net.UnknownHostException;
 import java.sql.SQLException;
-import java.util.Random;
-import java.util.UUID;
 
 public class AuthorizationWindow extends Canvas implements Layer {
     private BufferStrategy buffer;
@@ -112,6 +108,7 @@ public class AuthorizationWindow extends Canvas implements Layer {
         public void actionPerformed(ActionEvent e) {
             try {
 				checkNull();
+				createNewUserInDB();
 			} catch (UnknownHostException message) {
 				message.printStackTrace();
 				return;
@@ -122,6 +119,7 @@ public class AuthorizationWindow extends Canvas implements Layer {
         	if(e.getKeyCode() == KeyEvent.VK_ENTER) {
         		try {
 					checkNull();
+					createNewUserInDB();
 				} catch (UnknownHostException e1) {
 					e1.printStackTrace();
 				}
@@ -137,17 +135,22 @@ public class AuthorizationWindow extends Canvas implements Layer {
         		System.out.println("Some field isn't filled. Check for data in the fields");
         		return;
             }
-        	else
-        	{
-        		loginUser(nameStr, portStr, hostStr);
-				sqlHelper.insert(nameStr, portStr, hostStr);
-        	}
         }
     }
+     
+    private void createNewUserInDB() {
+    	loginUser(nameStr, portStr, hostStr);
+		sqlHelper.insert(nameStr, portStr, hostStr);
+    }
     
-    private void loginUser(String name, int port, String host) throws UnknownHostException {
+    private void loginUser(String name, int port, String host) {
     	frame.dispose();
-    	new ClientWindow(name, port, host);
+    	try {
+        	new ClientWindow(name, port, host);
+    	}
+    	catch(UnknownHostException e) {
+    		System.out.println(e.getMessage());
+    	}
     }
     
     public static void main(String[] args) {
