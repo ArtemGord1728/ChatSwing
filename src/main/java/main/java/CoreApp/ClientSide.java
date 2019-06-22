@@ -33,6 +33,7 @@ public class ClientSide {
             socket.send(packet);
         } catch (IOException e) {
             e.printStackTrace();
+            return "";
         }
 
         return new String(packet.getData());
@@ -50,9 +51,4 @@ public class ClientSide {
             e.printStackTrace();
         }
     }
-
-    public String getMessage(){
-        return new String(packet.getData());
-    }
-    
 }
