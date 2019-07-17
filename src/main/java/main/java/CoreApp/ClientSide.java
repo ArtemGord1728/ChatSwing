@@ -12,7 +12,7 @@ public class ClientSide {
     private String name, host;
     private DatagramPacket packet;
     private DatagramSocket socket;
-
+    private Thread send;
 
     public ClientSide(String name, int port, String host) {
     	this.port = port;
@@ -40,12 +40,18 @@ public class ClientSide {
     }
     
     public void sendTextMessage(byte[] message) {
-        packet = new DatagramPacket(message, message.length, ip, port);
-        try {
-            socket.send(packet);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    	send = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				packet = new DatagramPacket(message, message.length, ip, port);
+		        try {
+		            socket.send(packet);
+		        } catch (IOException e) {
+		            e.printStackTrace();
+		        }
+			}
+		}, "send");
+    	send.start();
     }
 
     public void sendFileMessage(byte[] message, String fileName) {
@@ -60,16 +66,4 @@ public class ClientSide {
             e.printStackTrace();
         }
     }
-    
-    public String getHost() {
-		return host;
-	}
-    
-    public String getName() {
-		return name;
-	}
-    
-    public int getPort() {
-		return port;
-	}
 }
