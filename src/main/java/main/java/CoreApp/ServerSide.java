@@ -22,7 +22,6 @@ public class ServerSide
     private ExecutorService executorServer;
     private List<ClientSide> clients;
     private boolean running = false;
-    private ClientSide clientSide;
     
     public ServerSide(int port, String host) {
         this.port = port;
