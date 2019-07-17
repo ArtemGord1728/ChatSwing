@@ -1,28 +1,17 @@
 package main.java.artem.serverswing;
 
 import main.java.CoreApp.ServerSide;
-import main.java.Windows.AuthorizationWindow;
-import java.net.UnknownHostException;
-import java.sql.SQLException;
 import java.util.Scanner;
 
 public class ServerMain {
-
-	private int port;
-
-	public ServerMain(int port) {
-		this.port = port;
-		new ServerSide(port);
-	}
-
-	public static void main(String[] args) throws SQLException, ClassNotFoundException, UnknownHostException {
+	public static void main(String[] args) {
 		int port;
-		String str;
+		String host;
 
 		Scanner sc = new Scanner(System.in);
 		port = sc.nextInt();
-		new ServerMain(port);
-
+		host = sc.next();
+		new ServerSide(port, host);
 		
 	}
 }
