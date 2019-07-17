@@ -62,6 +62,7 @@ public class ClientWindow extends Canvas implements Layer
         		}
         	}
 		});
+        dataInput.setText(null);
         frame.getContentPane().add(BorderLayout.SOUTH, dataInput);
         frame.add(textArea);
     }
@@ -83,8 +84,8 @@ public class ClientWindow extends Canvas implements Layer
     private void send(String msg) {
     	String message = name + ": " + msg;
     	textInArea(message);
-    	System.out.println(clientSide.sendTextMessage(message.getBytes()));
-    	dataInput.setText("");
+    	System.out.println();
+    	
     }
 
     private void textInArea(String someText){

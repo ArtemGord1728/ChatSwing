@@ -30,7 +30,7 @@ public class AuthorizationWindow extends Canvas implements Layer {
 
     public AuthorizationWindow(String name, int width, int height) throws SQLException, ClassNotFoundException {
         setPreferredSize(new Dimension(width, height));
-        sqlHelper = new SQLHelper();
+        //sqlHelper = new SQLHelper();
         initWindow(name);
         renderBuffer();
         loginInput.setText("user");
@@ -108,7 +108,7 @@ public class AuthorizationWindow extends Canvas implements Layer {
         public void actionPerformed(ActionEvent e) {
             try {
 				checkNull();
-				createNewUserInDB();
+				createNewUser();
 			} catch (UnknownHostException message) {
 				message.printStackTrace();
 				return;
@@ -119,7 +119,7 @@ public class AuthorizationWindow extends Canvas implements Layer {
         	if(e.getKeyCode() == KeyEvent.VK_ENTER) {
         		try {
 					checkNull();
-					createNewUserInDB();
+					createNewUser();
 				} catch (UnknownHostException e1) {
 					e1.printStackTrace();
 				}
@@ -131,16 +131,18 @@ public class AuthorizationWindow extends Canvas implements Layer {
         	nameStr = loginInput.getText();
             portStr = Integer.parseInt(portInput.getText());
             hostStr = hostInput.getText();
-        	if(loginInput.getText().equals("") || portInput.getText().equals("") || hostInput.getText().equals("")) {
+        	if(loginInput.getText().equals("") || 
+        	   portInput.getText().equals("") || 
+        	   hostInput.getText().equals("")) {
         		System.out.println("Some field isn't filled. Check for data in the fields");
         		return;
             }
         }
     }
      
-    private void createNewUserInDB() {
+    private void createNewUser() {
     	loginUser(nameStr, portStr, hostStr);
-		sqlHelper.insert(nameStr, portStr, hostStr);
+		//sqlHelper.insert(nameStr, portStr, hostStr);
     }
     
     private void loginUser(String name, int port, String host) {
