@@ -2,44 +2,56 @@ package main.java.CoreApp;
 
 
 import java.io.IOException;
-import java.net.*;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import main.java.LogPack.*;
+import java.util.concurrent.TimeUnit;
 
 public class ServerSide
 {
     private static final int MAX_CLIENTS_ON_SERVER = 3;
     private int port;
+    private String host;
     private Thread runServer, receiveData;
     private DatagramSocket datagramSocket;
     private ExecutorService executorServer;
     private List<ClientSide> clients;
     private boolean running = false;
-
-    public ServerSide(int port) {
+    private ClientSide clientSide;
+    
+    public ServerSide(int port, String host) {
         this.port = port;
+        this.host = host;
         init();        
-        System.out.println(new Date() + " : " + "Server started on port: " + port);
+        System.out.println(new Date() + " : " + "Server started on port - " + port);
+        System.out.println("Waiting for user...");
         
         runAndReceive();
     }
     
-
     private void init() {
     	try {
-        	clients = new ArrayList<ClientSide>();
+    		clients = new ArrayList<ClientSide>();
 			datagramSocket = new DatagramSocket(port);
 	        executorServer = Executors.newFixedThreadPool(MAX_CLIENTS_ON_SERVER);
-	        
 		} catch (SocketException e) {
 			e.printStackTrace();
 		}
     }
     
+    private void runAndReceive() {
+    	runServer = new Thread(() -> run());
+        runServer.start();
+        
+        receiveData = new Thread(() -> receive());
+        receiveData.start();
+    }
+
 
     public void sendMessage(byte[] data) {
 
@@ -67,11 +79,4 @@ public class ServerSide
         }
     }
     
-    private void runAndReceive() {
-    	runServer = new Thread(() -> run());
-        runServer.start();
-        
-        receiveData = new Thread(() -> receive());
-        receiveData.start();
-    }
 }
