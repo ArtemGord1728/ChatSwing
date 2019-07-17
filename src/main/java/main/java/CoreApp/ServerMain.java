@@ -1,6 +1,5 @@
-package main.java.artem.serverswing;
+package main.java.CoreApp;
 
-import main.java.CoreApp.ServerSide;
 import java.util.Scanner;
 
 public class ServerMain {
