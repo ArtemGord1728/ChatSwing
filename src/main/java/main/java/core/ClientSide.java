@@ -1,4 +1,4 @@
-package main.java.CoreApp;
+package main.java.core;
 
 
 import java.io.*;
@@ -33,7 +33,6 @@ public class ClientSide {
     	try {
     		socket = new DatagramSocket();
         	ip = InetAddress.getByName(host);
-        	socket = new DatagramSocket(port);
         } catch (IOException e) {
             e.printStackTrace();
         } 
