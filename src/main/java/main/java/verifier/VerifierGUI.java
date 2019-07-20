@@ -1,4 +1,4 @@
-package main.java.VerifierUtil;
+package main.java.verifier;
 
 import java.awt.Graphics;
 
@@ -6,7 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 
-import main.java.InterfacePack.Layer;
+import main.java.interface_pack.Layer;
 
 public class VerifierGUI extends JFrame
 {

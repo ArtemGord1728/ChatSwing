@@ -1,4 +1,4 @@
-package main.java.SQLPack;
+package main.java.sql_manager;
 
 import java.sql.*;
 
