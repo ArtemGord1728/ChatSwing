@@ -1,4 +1,4 @@
-package main.java.InterfacePack;
+package main.java.interface_pack;
 
 public interface Layer {
     void showLabels();

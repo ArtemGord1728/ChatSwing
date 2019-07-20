@@ -1,4 +1,4 @@
-package main.java.LogPack;
+package main.java.log_pack;
 
 import java.io.IOException;
 import java.util.logging.FileHandler;
