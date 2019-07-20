@@ -1,8 +1,8 @@
-package main.java.Windows;
+package main.java.windows;
 
-import main.java.CoreApp.ClientSide;
-import main.java.InterfacePack.Layer;
-import main.java.SQLPack.SQLHelper;
+import main.java.core.ClientSide;
+import main.java.interface_pack.Layer;
+import main.java.sql_manager.SQLHelper;
 
 import javax.swing.*;
 
