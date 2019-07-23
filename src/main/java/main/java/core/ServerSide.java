@@ -12,6 +12,7 @@ import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+
 public class ServerSide
 {
     private static final int MAX_CLIENTS_ON_SERVER = 3;
@@ -73,4 +74,8 @@ public class ServerSide
         }
     }
     
+    public boolean quit() {
+    	// check, quit a user or not
+    	return false;
+    }
 }
