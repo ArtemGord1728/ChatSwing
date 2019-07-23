@@ -6,14 +6,12 @@ public class User
 {
 	private int port;
 	private String host;
-	private long authKey;
-	private UUID uniqAuthKey;
+	private UUID authKey;
 	
 	public User(int port, String host, UUID authKey) {
 		this.port = port;
 		this.host = host;
-		uniqAuthKey = UniqueAuthKey.setAuthKey();
-		authKey = uniqAuthKey;
+		this.authKey = authKey;
 	}
 	
 	public int getPort() {
@@ -24,7 +22,7 @@ public class User
 		return host;
 	}
 	
-	public long getAuthKey() {
+	public UUID getAuthKey() {
 		return authKey;
 	}
 }
