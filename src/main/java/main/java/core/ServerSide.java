@@ -19,7 +19,9 @@ public class ServerSide
     private int port;
     private String host;
     private Thread runServer, receiveData;
-    private DatagramSocket datagramSocket;
+    private Runnable runnable;
+    private DatagramSocket socket;
+    private DatagramPacket packet;
     private ExecutorService executorServer;
     private List<User> clients;
     private boolean running = false;
@@ -38,7 +40,7 @@ public class ServerSide
     private void init() {
     	try {
     		clients = new ArrayList<User>();
-			datagramSocket = new DatagramSocket(port);
+    		socket = new DatagramSocket(port);
 	        executorServer = Executors.newFixedThreadPool(MAX_CLIENTS_ON_SERVER);
 		} catch (SocketException e) {
 			e.printStackTrace();
@@ -62,20 +64,37 @@ public class ServerSide
     }
     
     private void receive() {
-    	while (running) {
-            byte[] data = new byte[1024];
-            DatagramPacket datagramPacket = new DatagramPacket(data, data.length);
-            try {
-                datagramSocket.receive(datagramPacket);
-                clients.add(new User(port, host, authKey));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+    	runnable = new Runnable() {
+			
+			@Override
+			public void run() {
+				while (running) {
+		            byte[] data = new byte[1024];
+		            packet = new DatagramPacket(data, data.length);
+		            try {
+		            	socket.receive(packet);
+		                clients.add(new User(port, host, authKey));
+		            } catch (IOException e) {
+		                e.printStackTrace();
+		            }
+		        }
+				processs(packet);
+			}
+		};
     }
     
-    public boolean quit() {
-    	// check, quit a user or not
-    	return false;
+    private void processs(DatagramPacket packet) {
+    	
+    }
+    
+    private void disconnect(UUID uuid, boolean status) {
+    	
+    }
+    
+    private void quit() {
+    	for (int i = 0; i < clients.size(); i++) {
+			disconnect(clients.get(i).getAuthKey(), true);
+		}
+    	socket.close();
     }
 }
