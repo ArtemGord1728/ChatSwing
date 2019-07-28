@@ -23,7 +23,7 @@ public class LogWriter {
 		}
 	}
 	
-	private void logging() {
-		
+	public void logging(Level lvl, String text) {
+		logger.log(lvl, text);
 	}
 }
