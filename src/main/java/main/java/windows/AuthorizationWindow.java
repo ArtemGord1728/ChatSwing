@@ -1,12 +1,8 @@
 package main.java.windows;
 
-import main.java.core.ClientSide;
 import main.java.interface_pack.Layer;
 import main.java.sql_manager.SQLHelper;
-
 import javax.swing.*;
-
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,12 +15,13 @@ import java.sql.SQLException;
 public class AuthorizationWindow extends Canvas implements Layer {
     private BufferStrategy buffer;
     private JFrame frame;
+    public static boolean isAuthorization = false;
     private Graphics graphics;
     private static JTextField loginInput, portInput, hostInput;
     private JButton btn_reg;
     private static final int width = 180;
     private static final int height = 200;
-    private static SQLHelper sqlHelper;
+    //private static SQLHelper sqlHelper;
     public static String nameStr, hostStr;
     public static int portStr;
 
@@ -142,6 +139,7 @@ public class AuthorizationWindow extends Canvas implements Layer {
      
     private void createNewUser() {
     	loginUser(nameStr, portStr, hostStr);
+    	isAuthorization = true;
 		//sqlHelper.insert(nameStr, portStr, hostStr);
     }
     
