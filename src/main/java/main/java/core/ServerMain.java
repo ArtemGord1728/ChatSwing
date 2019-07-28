@@ -1,16 +1,18 @@
 package main.java.core;
 
-import java.util.Scanner;
 
 public class ServerMain {
 	public static void main(String[] args) {
 		int port;
 		String host;
 
-		Scanner sc = new Scanner(System.in);
-		port = sc.nextInt();
-		host = sc.next();
-		new ServerSide(port, host);
+		if(args.length == 0) {
+			System.out.println("Usage: java -jar Server.jar <port> <host>");
+		}
 		
+		port = Integer.parseInt(args[0]);
+		host = args[1];
+		
+		new ServerSide(port, host);
 	}
 }
