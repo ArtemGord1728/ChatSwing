@@ -12,6 +12,8 @@ import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import main.java.windows.AuthorizationWindow;
+
 
 public class ServerSide
 {
@@ -19,7 +21,7 @@ public class ServerSide
     private int port;
     private String host;
     private Thread runServer, receiveData;
-    private Runnable runnable;
+    private Runnable waiting;
     private DatagramSocket socket;
     private DatagramPacket packet;
     private ExecutorService executorServer;
@@ -32,9 +34,7 @@ public class ServerSide
         this.host = host;
         init();
         System.out.println(new Date() + " : " + "Server started on port - " + port);
-        System.out.println("Waiting for user...");
-        
-        runService();
+        System.out.println("Waiting for user...");        
     }
     
     private void init() {
@@ -42,21 +42,18 @@ public class ServerSide
     		clients = new ArrayList<User>();
     		socket = new DatagramSocket(port);
 	        executorServer = Executors.newFixedThreadPool(MAX_CLIENTS_ON_SERVER);
+	        
+	        runServer = new Thread(() -> run());
+	        runServer.start();
+	        
+	        executorServer.execute(() -> new ClientSide(port, host));
+	        
+	        receiveData = new Thread(() -> receive());
+	        receiveData.start();
 		} catch (SocketException e) {
 			e.printStackTrace();
 		}
     }
-    
-    private void runService() {
-    	runServer = new Thread(() -> run());
-        runServer.start();
-        
-        executorServer.execute(() -> new ClientSide(port, host));
-        
-        receiveData = new Thread(() -> receive());
-        receiveData.start();
-    }
-
     
     private void run() {
     	running = true;
@@ -64,8 +61,7 @@ public class ServerSide
     }
     
     private void receive() {
-    	runnable = new Runnable() {
-			
+    	waiting = new Runnable() {
 			@Override
 			public void run() {
 				while (running) {
@@ -73,7 +69,10 @@ public class ServerSide
 		            packet = new DatagramPacket(data, data.length);
 		            try {
 		            	socket.receive(packet);
-		                clients.add(new User(port, host, authKey));
+		            	if(AuthorizationWindow.isAuthorization) {
+		            		clients.add(new User(port, host, authKey));
+		            		System.out.println(clients.get(0).getAuthKey() + ":" + clients.get(0).getPort());
+		            	}
 		            } catch (IOException e) {
 		                e.printStackTrace();
 		            }
@@ -81,20 +80,29 @@ public class ServerSide
 				processs(packet);
 			}
 		};
+		waiting.run();
     }
     
     private void processs(DatagramPacket packet) {
-    	
+    	String data = new String(packet.getData());
     }
     
-    private void disconnect(UUID uuid, boolean status) {
-    	
+    private void disconnect(UUID clientId, boolean status) {
+    	User user;
+    	for (int i = 0; i < clients.size(); i++) {
+			if(clients.get(i).getAuthKey() == clientId) {
+				user = clients.get(i);
+				clients.remove(i);
+			}
+		}
+    	running = false;
     }
     
     private void quit() {
     	for (int i = 0; i < clients.size(); i++) {
 			disconnect(clients.get(i).getAuthKey(), true);
 		}
+    	running = false;
     	socket.close();
     }
 }
