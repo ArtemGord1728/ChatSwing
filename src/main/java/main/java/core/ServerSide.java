@@ -11,7 +11,9 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Level;
 
+import main.java.log_pack.LogWriter;
 import main.java.windows.AuthorizationWindow;
 
 
@@ -74,6 +76,7 @@ public class ServerSide
 		            		System.out.println(clients.get(0).getAuthKey() + ":" + clients.get(0).getPort());
 		            	}
 		            } catch (IOException e) {
+						LogWriter.logging(Level.WARNING, "Dont received data!");
 		                e.printStackTrace();
 		            }
 		        }
@@ -92,7 +95,7 @@ public class ServerSide
     	for (int i = 0; i < clients.size(); i++) {
 			if(clients.get(i).getAuthKey() == clientId) {
 				user = clients.get(i);
-				clients.remove(i);
+				clients.remove(user);
 			}
 		}
     	running = false;
