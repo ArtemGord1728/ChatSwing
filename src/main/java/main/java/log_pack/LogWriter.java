@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 public class LogWriter {
 	private static Logger logger;
 	private String className;
-	private FileHandler fileHandler = null;
+	private FileHandler fileHandler;
 	
 	public LogWriter(String className) {
 		this.className = className;
@@ -23,7 +23,7 @@ public class LogWriter {
 		}
 	}
 	
-	public void logging(Level lvl, String text) {
+	public static void logging(Level lvl, String text) {
 		logger.log(lvl, text);
 	}
 }
