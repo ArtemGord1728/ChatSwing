@@ -71,12 +71,10 @@ public class ServerSide
 		            packet = new DatagramPacket(data, data.length);
 		            try {
 		            	socket.receive(packet);
-		            	if(AuthorizationWindow.isAuthorization) {
-		            		clients.add(new User(port, host, authKey));
-		            		System.out.println(clients.get(0).getAuthKey() + ":" + clients.get(0).getPort());
-		            	}
-		            } catch (IOException e) {
-						LogWriter.logging(Level.WARNING, "Dont received data!");
+		            	clients.add(new User(port, host, authKey));
+		            	System.out.println(clients.get(0).getAuthKey() + ":" + clients.get(0).getPort());
+		            } 
+		            catch (IOException e) {
 		                e.printStackTrace();
 		            }
 		        }
@@ -87,7 +85,7 @@ public class ServerSide
     }
     
     private void processs(DatagramPacket packet) {
-    	String data = new String(packet.getData());
+    	//String data = new String(packet.getData());
     }
     
     private void disconnect(UUID clientId, boolean status) {
