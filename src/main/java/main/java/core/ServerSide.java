@@ -6,15 +6,10 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.logging.Level;
-
-import main.java.log_pack.LogWriter;
-import main.java.windows.AuthorizationWindow;
 
 
 public class ServerSide
@@ -22,7 +17,7 @@ public class ServerSide
     private static final int MAX_CLIENTS_ON_SERVER = 3;
     private int port;
     private String host;
-    private Thread runServer, receiveData;
+    private Thread runServer;
     private Runnable waiting;
     private DatagramSocket socket;
     private DatagramPacket packet;
@@ -34,9 +29,9 @@ public class ServerSide
     public ServerSide(int port, String host) {
         this.port = port;
         this.host = host;
-        init();
-        System.out.println(new Date() + " : " + "Server started on port - " + port);
+        System.out.println("Server started on port - " + port);
         System.out.println("Waiting for user...");        
+        init();
     }
     
     private void init() {
@@ -45,25 +40,26 @@ public class ServerSide
     		socket = new DatagramSocket(port);
 	        executorServer = Executors.newFixedThreadPool(MAX_CLIENTS_ON_SERVER);
 	        
-	        runServer = new Thread(() -> run());
-	        runServer.start();
-	        
+	        runServer = new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					while(running) {
+						receive();
+					}
+				}
+			});
+	                
 	        executorServer.execute(() -> new ClientSide(port, host));
 	        
-	        receiveData = new Thread(() -> receive());
-	        receiveData.start();
 		} catch (SocketException e) {
 			e.printStackTrace();
 		}
     }
-    
-    private void run() {
-    	running = true;
-    	receive();
-    }
+  
     
     private void receive() {
-    	waiting = new Runnable() {
+    	waiting = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				while (running) {
@@ -71,16 +67,16 @@ public class ServerSide
 		            packet = new DatagramPacket(data, data.length);
 		            try {
 		            	socket.receive(packet);
-		            	clients.add(new User(port, host, authKey));
-		            	System.out.println(clients.get(0).getAuthKey() + ":" + clients.get(0).getPort());
 		            } 
 		            catch (IOException e) {
 		                e.printStackTrace();
 		            }
+		            clients.add(new User(port, host, authKey));
+	            	System.out.println(clients.get(0).getAuthKey() + ":" + clients.get(0).getPort());
 		        }
 				processs(packet);
 			}
-		};
+		});
 		waiting.run();
     }
     
