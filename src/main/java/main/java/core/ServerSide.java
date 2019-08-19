@@ -1,105 +1,96 @@
 package main.java.core;
 
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.SocketException;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 
-public class ServerSide
+public class ServerSide implements Runnable
 {
-    private static final int MAX_CLIENTS_ON_SERVER = 3;
+	private ServerSocket serverSocket;
+	private Socket client;
+	private DataInputStream inputStream;	
+	private DataOutputStream outputStream;
     private int port;
-    private String host;
-    private Thread runServer;
-    private Runnable waiting;
-    private DatagramSocket socket;
-    private DatagramPacket packet;
-    private ExecutorService executorServer;
-    private List<User> clients;
+    private Thread runServer, receiveData;
+    private List<User> clients = new ArrayList<User>();
     private boolean running = false;
-	private UUID authKey;
     
-    public ServerSide(int port, String host) {
+    public ServerSide(int port) {
         this.port = port;
-        this.host = host;
-        System.out.println("Server started on port - " + port);
-        System.out.println("Waiting for user...");        
-        init();
+        try {
+			serverSocket = new ServerSocket(port);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        runServer = new Thread(this, "ServerSide");
+        runServer.start();
     }
     
     private void init() {
     	try {
-    		clients = new ArrayList<User>();
-    		socket = new DatagramSocket(port);
-	        executorServer = Executors.newFixedThreadPool(MAX_CLIENTS_ON_SERVER);
-	        
-	        runServer = new Thread(new Runnable() {
-				
-				@Override
-				public void run() {
-					while(running) {
-						receive();
-					}
-				}
-			});
-	                
-	        executorServer.execute(() -> new ClientSide(port, host));
-	        
-		} catch (SocketException e) {
+    		client = serverSocket.accept();
+			inputStream = new DataInputStream(client.getInputStream());
+			outputStream = new DataOutputStream(client.getOutputStream());
+			
+			if(client.isConnected())
+				System.out.println("Client connected with port - " + this.port);
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
     }
-  
+    
+    @Override
+	public void run() {
+		running = true;
+		init();
+		receive();
+	}
     
     private void receive() {
-    	waiting = new Thread(new Runnable() {
+    	receiveData = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				while (running) {
-		            byte[] data = new byte[1024];
-		            packet = new DatagramPacket(data, data.length);
-		            try {
-		            	socket.receive(packet);
-		            } 
-		            catch (IOException e) {
-		                e.printStackTrace();
-		            }
-		            clients.add(new User(port, host, authKey));
-	            	System.out.println(clients.get(0).getAuthKey() + ":" + clients.get(0).getPort());
-		        }
-				processs(packet);
-			}
+					try {
+						String dataFromClient = inputStream.readUTF();
+						System.out.println("Client: " + dataFromClient);
+						
+						outputStream.writeUTF("Server reply " + dataFromClient);
+						
+						if(dataFromClient.equalsIgnoreCase("quit")) {
+							System.out.println("Server will be close");
+							stopServer();	
+							running = false;
+							return;
+						}
+						
+						outputStream.flush();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
 		});
-		waiting.run();
+    	receiveData.start();
     }
     
-    private void processs(DatagramPacket packet) {
-    	//String data = new String(packet.getData());
-    }
-    
-    private void disconnect(UUID clientId, boolean status) {
-    	User user;
-    	for (int i = 0; i < clients.size(); i++) {
-			if(clients.get(i).getAuthKey() == clientId) {
-				user = clients.get(i);
-				clients.remove(user);
-			}
+    private void stopServer() {
+    	try {
+    		serverSocket.close();
+    		client.close();
+			inputStream.close();
+			outputStream.close();
+			clients.clear();
+			port = 0;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-    	running = false;
     }
     
-    private void quit() {
-    	for (int i = 0; i < clients.size(); i++) {
-			disconnect(clients.get(i).getAuthKey(), true);
-		}
-    	running = false;
-    	socket.close();
-    }
 }
