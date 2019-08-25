@@ -3,7 +3,6 @@ package main.java.core;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.EOFException;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -11,14 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ServerSide implements Runnable
+public class ServerSide
 {
 	private ServerSocket serverSocket;
 	private Socket client;
 	private DataInputStream inputStream;	
 	private DataOutputStream outputStream;
     private int port;
-    private Thread runServer, receiveData;
     private List<User> clients = new ArrayList<User>();
     private boolean running = false;
     
@@ -26,11 +24,11 @@ public class ServerSide implements Runnable
         this.port = port;
         try {
 			serverSocket = new ServerSocket(port);
+			 init();
+		     receive();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-        runServer = new Thread(this, "ServerSide");
-        runServer.start();
     }
     
     private void init() {
@@ -38,7 +36,7 @@ public class ServerSide implements Runnable
     		client = serverSocket.accept();
 			inputStream = new DataInputStream(client.getInputStream());
 			outputStream = new DataOutputStream(client.getOutputStream());
-			
+			running = true;
 			if(client.isConnected())
 				System.out.println("Client connected with port - " + this.port);
 		} catch (IOException e) {
@@ -46,38 +44,27 @@ public class ServerSide implements Runnable
 		}
     }
     
-    @Override
-	public void run() {
-		running = true;
-		init();
-		receive();
-	}
     
     private void receive() {
-    	receiveData = new Thread(new Runnable() {
-			@Override
-			public void run() {
-					try {
-						String dataFromClient = inputStream.readUTF();
-						System.out.println("Client: " + dataFromClient);
-						
-						outputStream.writeUTF("Server reply " + dataFromClient);
-						
-						if(dataFromClient.equalsIgnoreCase("quit")) {
-							System.out.println("Server will be close");
-							stopServer();	
-							running = false;
-							return;
-						}
-						
-						outputStream.flush();
-					} catch (IOException e) {
-						e.printStackTrace();
+			try {
+				while(inputStream.available() > 0) {
+					String dataFromClient = inputStream.readUTF();
+					System.out.println("Client: " + dataFromClient);
+					outputStream.writeUTF("Server reply " + dataFromClient);
+					outputStream.flush();
+					
+					if(dataFromClient.equalsIgnoreCase("quit") && running) {
+						System.out.println("Server will be close");
+						stopServer();
+						running = false;
+						return;
 					}
+					
 				}
-		});
-    	receiveData.start();
-    }
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+	}
     
     private void stopServer() {
     	try {
@@ -88,7 +75,6 @@ public class ServerSide implements Runnable
 			clients.clear();
 			port = 0;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }
