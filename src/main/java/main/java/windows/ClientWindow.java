@@ -34,8 +34,7 @@ public class ClientWindow extends Canvas implements Layer
         setPreferredSize(new Dimension(500, 500));
         initWindow(name);
         renderBuffer();
-        clientSide = new ClientSide(name, port, host);
-        System.out.println("Client name: " + name + ", port: " + port);
+        clientSide = new ClientSide(port);
     }
 
     @Override
@@ -59,10 +58,10 @@ public class ClientWindow extends Canvas implements Layer
         	public void keyPressed(KeyEvent e) {
         		if(e.getKeyCode() == KeyEvent.VK_ENTER) {
         			send(dataInput.getText());
+        			dataInput.setText(null);
         		}
         	}
 		});
-        dataInput.setText(null);
         frame.getContentPane().add(BorderLayout.SOUTH, dataInput);
         frame.add(textArea);
     }
@@ -83,9 +82,8 @@ public class ClientWindow extends Canvas implements Layer
     
     private void send(String msg) {
     	String message = name + ": " + msg;
+    	clientSide.send(message);
     	textInArea(message);
-    	System.out.println();
-    	
     }
 
     private void textInArea(String someText){
