@@ -2,67 +2,68 @@ package main.java.core;
 
 
 import java.io.*;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
+import java.net.Socket;
 
-public class ClientSide {
-    private InetAddress ip;
+public class ClientSide implements Runnable{
     private int port;
-    private String name, host;
-    private DatagramPacket packet;
-    private DatagramSocket socket;
-    private Thread send;
+    private Thread sendMsg, runClient;
+    private BufferedReader br;
+	private Socket socket;
+	private DataInputStream inStream;
+	private DataOutputStream outStream;
 
-    public ClientSide(String name, int port, String host) {
+    public ClientSide(int port) {
     	this.port = port;
-    	this.name = name;
-    	this.host = host;
-    	
-    	connectToIpAndSocket();
-    }
-    
-    public ClientSide(int port, String host) {
-    	this.port = port;
-    	this.host = host;
-    	
-		connectToIpAndSocket();
+    	try {
+			socket = new Socket("localhost", port);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    	runClient = new Thread(this, "ClientSide");
+    	runClient.start();
 	}
     
-    private void connectToIpAndSocket() {
+    private void init() {
     	try {
-    		socket = new DatagramSocket();
-        	ip = InetAddress.getByName(host);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } 
+			inStream = new DataInputStream(socket.getInputStream());
+			outStream = new DataOutputStream(socket.getOutputStream());
+			br = new BufferedReader(new InputStreamReader(System.in));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     }
     
-    public void sendTextMessage(byte[] message) {
-    	send = new Thread(new Runnable() {
+    public void send(String msg) {
+    	sendMsg = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				packet = new DatagramPacket(message, message.length, ip, port);
-		        try {
-		            socket.send(packet);
-		        } catch (IOException e) {
-		            e.printStackTrace();
-		        }
+				try {
+					while(!socket.isOutputShutdown()) {
+						outStream.writeUTF(msg);
+						outStream.flush();
+						System.out.println("Client send message - " + msg);
+						Thread.sleep(1000);
+					}
+				} catch (IOException | InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
-		}, "send");
-    	send.start();
+		});
+    	sendMsg.start();
     }
-
-    public void sendFileMessage(byte[] message, String fileName) {
-        try {
-            FileInputStream fileStream = new FileInputStream(fileName);
-            while (fileStream.read() != -1) {
-                packet = new DatagramPacket(message, message.length, ip, port);
-                socket.send(packet);
-            }
-            fileStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    
+	@Override
+	public void run() {
+		init();
+	}
+	
+	private void stop() {
+		try {
+			inStream.close();
+			outStream.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
 }
